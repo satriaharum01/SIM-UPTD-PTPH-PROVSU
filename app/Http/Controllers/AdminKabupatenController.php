@@ -17,43 +17,34 @@ class AdminKabupatenController extends Controller
 
     public function index()
     {
-        $this->data['title'] = 'Anime Management';
-        $this->data['sub_title'] = 'List Anime '.env('APP_NAME');
-        $this->data['animes'] = Anime::orderBy('title')->paginate(10);
+        $this->data['title'] = 'Data Kabupaten';
+        $this->data['sub_title'] = 'List Data Kabupaten';
 
-        return view('admin/anime/index', $this->data);
+        return view('admin/kabupaten/index', $this->data);
     }
 
     public function show($id)
     {
-        $anime = Anime::findorfail($id);
-        $this->data['title'] = 'Anime Management';
-        $this->data['anime'] = $anime;
+        $anime = Kabupaten::findorfail($id);
+        $this->data['title'] = 'Data Kabupaten';
         $this->data['sub_title'] = $anime->title;
 
-        return view('admin/anime/show', $this->data);
+        return view('admin/kabupaten/show', $this->data);
     }
     public function new()
     {
-        $this->data['title'] = 'Anime Management';
-        $this->data['sub_title'] = 'Add New Anime ';
+        $this->data['title'] = 'Data Kabupaten';
+        $this->data['sub_title'] = 'Tambah Data ';
 
-        return view('admin/anime/detail', $this->data);
+        return view('admin/kabupaten/detail', $this->data);
     }
 
-    public function json($id)
+    public function json()
     {
-        $data = Episode::select('*')
-                ->where('anime_id', $id)
-                ->orderby('title', 'ASC')
+        $data = Kabupaten::select('*')
+                ->orderby('nama_kabupaten', 'ASC')
                 ->get();
-        
-        foreach($data as $row)
-        {
-            $row->episode = $row->title;
-            $row->replies = 1;
-            $row->date_updated = date('d F, Y', strtotime($row->updated_at));
-        }
+
         return Datatables::of($data)
             ->addIndexColumn()
             ->make(true);

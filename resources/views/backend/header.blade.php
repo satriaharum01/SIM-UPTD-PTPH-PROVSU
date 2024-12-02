@@ -2,48 +2,14 @@
         <div class="header py-4">
           <div class="container">
             <div class="d-flex">
-              <a class="header-brand" href="./index.html">
+              <a class="align-items-center header-brand row" href="./index.html">
                 <img src="{{asset('assets/img/logo.png')}}" class="header-brand-img" alt="tabler logo">
-                <div>
-                DINAS KETAHANAN PANGAN TANAMAN PANGAN & HORTIKULTURA
-PROVINSI SUMATERA UTARA
+                <div class="ml-2 row flex-column ">
+                  <h5 style="line-height: 10px;">DINAS KETAHANAN PANGAN TANAMAN PANGAN & HORTIKULTURA</h5>
+                  <h6 style="line-height: 0px;">PROVINSI SUMATERA UTARA</h6>
                 </div>
               </a>
               <div class="d-flex order-lg-2 ml-auto">
-                <div class="nav-item d-none d-md-flex">
-                  <a href="#" class="btn btn-sm btn-outline-primary" target="_blank">Source code</a>
-                </div>
-                <div class="dropdown d-none d-md-flex">
-                  <a class="nav-link icon" data-toggle="dropdown">
-                    <i class="fe fe-bell"></i>
-                    <span class="nav-unread"></span>
-                  </a>
-                  <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                    <a href="#" class="dropdown-item d-flex">
-                      <span class="avatar mr-3 align-self-center" style="background-image: url(demo/faces/male/41.jpg)"></span>
-                      <div>
-                        <strong>Nathan</strong> pushed new commit: Fix page load performance issue.
-                        <div class="small text-muted">10 minutes ago</div>
-                      </div>
-                    </a>
-                    <a href="#" class="dropdown-item d-flex">
-                      <span class="avatar mr-3 align-self-center" style="background-image: url(demo/faces/female/1.jpg)"></span>
-                      <div>
-                        <strong>Alice</strong> started new task: Tabler UI design.
-                        <div class="small text-muted">1 hour ago</div>
-                      </div>
-                    </a>
-                    <a href="#" class="dropdown-item d-flex">
-                      <span class="avatar mr-3 align-self-center" style="background-image: url(demo/faces/female/18.jpg)"></span>
-                      <div>
-                        <strong>Rose</strong> deployed new version of NodeJS REST Api V3
-                        <div class="small text-muted">2 hours ago</div>
-                      </div>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item text-center text-muted-dark">Mark all as read</a>
-                  </div>
-                </div>
                 <div class="dropdown">
                   <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
                     <span class="avatar" style="background-image: url(./demo/faces/female/25.jpg)"></span>
@@ -82,17 +48,9 @@ PROVINSI SUMATERA UTARA
             </div>
           </div>
         </div>
-        <div class="header collapse d-lg-flex p-0" id="headerMenuCollapse">
+        <div class="bg-azure-darkest header collapse d-lg-flex p-0" id="headerMenuCollapse">
           <div class="container">
             <div class="row align-items-center">
-              <div class="col-lg-3 ml-auto">
-                <form class="input-icon my-3 my-lg-0">
-                  <input type="search" class="form-control header-search" placeholder="Search&hellip;" tabindex="1">
-                  <div class="input-icon-addon">
-                    <i class="fe fe-search"></i>
-                  </div>
-                </form>
-              </div>
               <div class="col-lg order-lg-first">
                 <ul class="nav nav-tabs border-0 flex-column flex-lg-row">
                   <li class="nav-item">
@@ -102,20 +60,10 @@ PROVINSI SUMATERA UTARA
                     <a href="#" class="nav-link"><i class="fe fe-users"></i> User</a>
                   </li>
                   <li class="nav-item dropdown">
-                    <a href="{{route('admin.kabupaten')}}" class="nav-link {{ (request()->is('admin/kabupaten')) ? 'active' : '' }} {{ (request()->is('admin/kabupaten/*')) ? 'active' : '' }}"><i class="fe fe-film"></i> Kabupaten</a>
+                    <a href="{{route('admin.kabupaten')}}" class="nav-link {{ (request()->is('admin/kabupaten')) ? 'active' : '' }} {{ (request()->is('admin/kabupaten/*')) ? 'active' : '' }}"><i class="fe fe-grid"></i> Kabupaten</a>
                   </li>
                   <li class="nav-item dropdown">
-                    <a href="{{route('admin.laporan')}}" class="nav-link {{ (request()->is('admin/laporan')) ? 'active' : '' }} {{ (request()->is('admin/laporan/*')) ? 'active' : '' }}"><i class="fe fe-video"></i> Laporan</a>
-                  </li>
-                  <li class="nav-item dropdown">
-                    <a href="#" class="nav-link"><i class="fa fa-commenting"></i> Komentar</a>
-                  </li>
-                  <li class="nav-item dropdown">
-                    <a href="#" class="nav-link" data-toggle="dropdown"><i class="fa fa-bullhorn"></i> Berita & Blog</a>
-                    <div class="dropdown-menu dropdown-menu-arrow">
-                      <a href="#" class="dropdown-item ">Berita</a>
-                      <a href="#" class="dropdown-item ">Blog</a>
-                    </div>
+                    <a href="{{route('admin.laporan')}}" class="nav-link {{ (request()->is('admin/laporan')) ? 'active' : '' }} {{ (request()->is('admin/laporan/*')) ? 'active' : '' }}"><i class="fe fe-file-text"></i> Laporan</a>
                   </li>
                 </ul>
               </div>
