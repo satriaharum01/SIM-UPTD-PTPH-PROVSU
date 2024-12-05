@@ -75,7 +75,7 @@
       });
     });
   $("body").on("click", ".btn-add", function () {
-    window.location.href = "{{route('admin.kabupaten')}}";
+    window.location.href = "{{route('admin.kabupaten.new')}}";
   })
 
 </script>

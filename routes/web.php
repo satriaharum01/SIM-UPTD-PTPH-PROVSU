@@ -31,6 +31,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
 
     Route::prefix('kabupaten')->name('kabupaten.')->group(function () {
+        Route::get('/tambah', [App\Http\Controllers\AdminKabupatenController::class, 'new'])->name('new');
         Route::POST('/save', [App\Http\Controllers\AdminKabupatenController::class, 'store']);
         Route::POST('/update/{id}', [App\Http\Controllers\AdminKabupatenController::class, 'update']);
         Route::GET('/delete/{id}', [App\Http\Controllers\AdminKabupatenController::class, 'destroy']);

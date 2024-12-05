@@ -33,7 +33,7 @@ class AuthController extends Controller
             $rows->update([
                 'last_login' => now()
              ]);
-            return redirect()->intended('/'.$level.'/dashboard')
+            return redirect()->intended('/admin/dashboard')
                         ->withSuccess('Signed in');
         }
 

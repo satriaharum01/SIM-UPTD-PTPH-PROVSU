@@ -11,5 +11,16 @@ class Verifikasi extends Model
     protected $table = 'verifikasi';
     protected $primaryKey = 'id';
     protected $fillable = ['laporan_id','verifikator_id','status','catatan','tanggal_verifikasi'];
-
+    protected $inputType = [
+        'laporan_id' => 'select',
+        'verifikator_id' => 'select',
+        'status' => 'select',
+        'catatan' => 'text',
+        'tanggal_verifikasi' => 'date'
+    ];
+    
+    public function getField()
+    {
+        return $this->inputType;
+    }
 }

@@ -35,8 +35,11 @@ class AdminKabupatenController extends Controller
     {
         $this->data['title'] = 'Data Kabupaten';
         $this->data['sub_title'] = 'Tambah Data ';
+        $fillable = (new Kabupaten())->getFillable();
+        $fieldTypes = (new Kabupaten())->getField();
 
-        return view('admin/kabupaten/detail', $this->data);
+        print_r($fieldTypes);
+        //return view('admin/kabupaten/detail', $this->data);
     }
 
     public function json()

@@ -11,5 +11,13 @@ class Tanaman extends Model
     protected $table = 'tanaman';
     protected $primaryKey = 'id';
     protected $fillable = ['nama_tanaman'];
+    protected $inputType = [
+        'nama_tanaman' => 'text'
+    ];
 
+
+    public function getField()
+    {
+        return $this->inputType;
+    }
 }

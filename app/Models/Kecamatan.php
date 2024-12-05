@@ -11,5 +11,13 @@ class Kecamatan extends Model
     protected $table = 'kecamatan';
     protected $primaryKey = 'id';
     protected $fillable = ['kabupaten_id','nama_kecamatan'];
+    protected $inputType = [
+        'kabupaten_id' => 'select',
+        'nama_kecamatan' => 'text'
+    ];
 
+    public function getField()
+    {
+        return $this->inputType;
+    }
 }

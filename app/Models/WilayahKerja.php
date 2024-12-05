@@ -11,5 +11,13 @@ class WilayahKerja extends Model
     protected $table = 'wilayah_kerja';
     protected $primaryKey = 'id';
     protected $fillable = ['kecamatan_id','nama_daerah'];
+    protected $inputType = [
+        'kecamatan_id' => 'select',
+        'nama_daerah' => 'text'
+    ];
 
+    public function getField()
+    {
+        return $this->inputType;
+    }
 }

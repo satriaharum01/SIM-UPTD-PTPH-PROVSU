@@ -11,5 +11,10 @@ class Kabupaten extends Model
     protected $table = 'kabupaten';
     protected $primaryKey = 'id';
     protected $fillable = ['nama_kabupaten'];
+    protected $inputType = ['nama_kabupaten' => 'text'];
 
+    public function getField()
+    {
+        return $this->inputType;
+    }
 }
