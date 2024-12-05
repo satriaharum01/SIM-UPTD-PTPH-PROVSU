@@ -55,26 +55,4 @@
           </div>
         </div>
     </footer>
-    <script src="{{asset('assets/js/jquery-3.7.0.min.js')}}"></script>
-    <script src="{{asset('assets/js/jquery-ui.min.js')}}"></script>
-    <script src="{{asset('assets/js/bootstrap.min.js')}}"></script>
-    <!-- Data table plugin-->
-    <script type="text/javascript" src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
-    <!-- Custom Script -->
-    <script>
-      var renderAsHtml = function (data, type, full) {
-        return decHTMLifEnc(data);
-      }; 
-      var isEncHTML = function(str) {
-          if(str.search(/&amp;/g) != -1 || str.search(/&lt;/g) != -1 || str.search(/&gt;/g) != -1)
-              return true;
-          else
-              return false;
-      };
-      
-      var decHTMLifEnc = function(str){
-          if(isEncHTML(str))
-              return str.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
-          return str;
-      }
-    </script>
+    

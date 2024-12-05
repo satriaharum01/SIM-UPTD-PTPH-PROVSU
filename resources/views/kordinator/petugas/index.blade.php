@@ -18,7 +18,8 @@
                             <thead>
                               <tr>
                                 <th width="10%"></th>
-                                <th class="text-primary" width="50%">Nama Kabupaten</th>
+                                <th class="text-primary" width="25%">Nama Petugas</th>
+                                <th class="text-primary" width="25%">Wilayah Kerja</th>
                                 <th class="text-primary">Action</th>
                               </tr>
                             </thead>
@@ -52,7 +53,11 @@
             className: "text-center",
           },
           {
-            data: "nama_kabupaten",
+            data: "name",
+            className: "text-left",
+          },
+          {
+            data: "wilayahKerja",
             className: "text-left",
           },
           {
@@ -74,12 +79,12 @@
       });
     });
   $("body").on("click", ".btn-add", function () {
-    window.location.href = "{{route('admin.kabupaten.new')}}";
+    window.location.href = "{{route('kordinator.petugas.new')}}";
   })
 
   $("body").on("click", ".btn-edit", function () {
     var Id = $(this).attr("data-id");
-    var url = "{{ route('admin.kabupaten.edit', ':id') }}".replace(':id', Id);
+    var url = "{{ route('kordinator.petugas.edit', ':id') }}".replace(':id', Id);
     window.location.href = url;
   })
 </script>

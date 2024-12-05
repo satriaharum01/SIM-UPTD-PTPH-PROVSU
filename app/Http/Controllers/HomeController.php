@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Appointments;
-use App\Models\Billing;
-use App\Models\Doctors;
-use App\Models\MedicalRecords;
-use App\Models\Patients;
-use App\Models\Prescriptions;
+use App\Models\Kabupaten;
+use App\Models\Kecamatan;
+use App\Models\Laporan;
+use App\Models\Notif;
+use App\Models\OPT;
+use App\Models\Petugas;
+use App\Models\Tanaman;
 use App\Models\User;
+use App\Models\Verifikasi;
+use App\Models\WilayahKerja;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use DataTables;
@@ -43,9 +47,25 @@ class HomeController extends Controller
         return view('auth/login', $this->data);
     }
 
-    public function get_doctors()
+    //GeT FUnction
+
+    public function getKabupaten()
     {
-        $data = Doctors::select('*')
+        $data = Kabupaten::select('*')
+                ->orderby('nama_kabupaten', 'ASC')
+                ->get();
+
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->make(true);
+    }
+
+    public function getUsersLevel($level)
+    {
+        if($level == 'all'){$level = '';}
+
+        $data = User::select('*')
+                ->where('level',$level)
                 ->orderby('name', 'ASC')
                 ->get();
 
@@ -54,23 +74,11 @@ class HomeController extends Controller
             ->make(true);
     }
 
-    public function get_patients()
+    public function getKecamatan()
     {
-        $data = Patients::select('*')
-                ->orderby('name', 'ASC')
+        $data = Kecamatan::select('*')
+                ->orderby('nama_kecamatan', 'DESC')
                 ->get();
-
-        return Datatables::of($data)
-            ->addIndexColumn()
-            ->make(true);
-    }
-
-    public function get_appointments()
-    {
-        $data = Appointments::select('*')
-        ->orderby('appointment_date', 'DESC')
-        ->orderby('appointment_time', 'DESC')
-        ->get();
 
         foreach ($data as $row) {
             $row->waktu = date('d F Y', strtotime($row->appointment_date)) .' '. date('h:i A', strtotime($row->appointment_time));
@@ -84,42 +92,28 @@ class HomeController extends Controller
             ->make(true);
     }
 
-    public function get_patients_appointments($id)
+    public function getWilayahKerja($id)
     {
-        $data = Appointments::select('*')
-        ->where('patient_id', $id)
-        ->orderby('appointment_date', 'DESC')
-        ->orderby('appointment_time', 'DESC')
-        ->get();
+        $kecamatan = Kecamatan::select('id')->where('kabupaten_id',$id)->get()->toArray();
+        $data = WilayahKerja::select('*')
+                ->whereIn('kecamatan_id',$kecamatan)
+                ->get();
 
-        foreach ($data as $row) {
-            $row->waktu = date('d F Y', strtotime($row->appointment_date)) .' '. date('h:i A', strtotime($row->appointment_time));
-            $row->kode = date('Ymd', strtotime($row->appointment_date)).'APPR'.$row->appointment_id;
-            $row->dokter = $row->cari_dokter->name;
-        }
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->make(true);
+    }
+    //FiND
+    public function findKabupaten($id)
+    {
+        $data = Kabupaten::select('*')
+                ->where('id',$id)
+                ->orderby('nama_kabupaten', 'ASC')
+                ->get();
 
         return Datatables::of($data)
             ->addIndexColumn()
             ->make(true);
     }
 
-    public function get_doctor_appointments()
-    {
-        $doctor = Doctors::select('id')->where('user_id', Auth::user()->id)->first();
-        $data = Appointments::select('*')
-        ->where('doctor_id', $doctor->id)
-        ->orderby('appointment_date', 'DESC')
-        ->orderby('appointment_time', 'DESC')
-        ->get();
-
-        foreach ($data as $row) {
-            $row->waktu = date('d F Y', strtotime($row->appointment_date)) .' '. date('h:i A', strtotime($row->appointment_time));
-            $row->kode = date('Ymd', strtotime($row->appointment_date)).'APPR'.$row->appointment_id;
-            $row->pasien = $row->cari_pasien->name;
-        }
-
-        return Datatables::of($data)
-            ->addIndexColumn()
-            ->make(true);
-    }
 }

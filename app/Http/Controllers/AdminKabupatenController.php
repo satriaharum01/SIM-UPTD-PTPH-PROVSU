@@ -12,7 +12,8 @@ class AdminKabupatenController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        //$this->middleware('is_admin');
+        $this->page = 'admin/kabupaten';
+        $this->middleware('is_admin');
     }
 
     public function index()
@@ -35,13 +36,24 @@ class AdminKabupatenController extends Controller
     {
         $this->data['title'] = 'Data Kabupaten';
         $this->data['sub_title'] = 'Tambah Data ';
-        $fillable = (new Kabupaten())->getFillable();
-        $fieldTypes = (new Kabupaten())->getField();
+        $this->data['fillable'] = (new Kabupaten())->getFillable();
+        $this->data['fieldTypes'] = (new Kabupaten())->getField();
+        $this->data['action'] = 'admin/kabupaten/save';
 
-        print_r($fieldTypes);
-        //return view('admin/kabupaten/detail', $this->data);
+        return view('admin/kabupaten/detail', $this->data);
     }
 
+    public function edit($id)
+    {
+        $rows = Kabupaten::find($id);
+        $this->data['title'] = 'Data Kabupaten';
+        $this->data['sub_title'] = 'Edit Data ';
+        $this->data['fieldTypes'] = (new Kabupaten())->getField();
+        $this->data['load'] = $rows;
+        $this->data['action'] = 'admin/kabupaten/update/'.$rows->id;
+
+        return view('admin/kabupaten/detail', $this->data);
+    }
     public function json()
     {
         $data = Kabupaten::select('*')
@@ -51,5 +63,33 @@ class AdminKabupatenController extends Controller
         return Datatables::of($data)
             ->addIndexColumn()
             ->make(true);
+    }
+
+    //CRUD
+
+    public function update(Request $request, $id)
+    {
+        $rows = Kabupaten::find($id);
+
+        $fillAble = (new Kabupaten())->getFillable();
+        $rows->update($request->only($fillAble));
+
+        return redirect($this->page);
+    }
+
+    public function store(Request $request)
+    {
+        $fillAble = (new Kabupaten())->getFillable();
+        Kabupaten::create($request->only($fillAble));
+
+        return redirect($this->page);
+    }
+
+    public function destroy($id)
+    {
+        $rows = Kabupaten::findOrFail($id);
+        $rows->delete();
+
+        return redirect($this->page);
     }
 }

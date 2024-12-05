@@ -25,11 +25,11 @@ class CustomAuth extends Controller
         $credentials = $request->only('email', 'password');
         if (Auth::attempt($credentials)) {
             $rows = User::find(Auth::user()->id);
-            $level = strtolower( $rows->level);
+            $level = strtolower($rows->level);
             $rows->update([
                 'last_login' => now()
              ]);
-            return redirect()->intended('/'.$level.'/dashboard')
+            return redirect()->intended('/admin/dashboard')
                         ->withSuccess('Signed in');
         }
 

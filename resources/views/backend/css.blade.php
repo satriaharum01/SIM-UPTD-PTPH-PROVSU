@@ -7,7 +7,10 @@
     </script>
     <link  rel="stylesheet"  href="{{asset('assets/css/datatables.min.css')}}"/>
     <link href="{{asset('assets/css/dashboard.css')}}" rel="stylesheet" />
-    
+     <!-- SweetAlert 2 -->
+     <script src="{{ asset( 'assets/dist/sweetalert2/sweetalert2.all.min.js')}}">
+    </script>
+    <link rel="{{ asset( 'assets/dist/sweetalert2/sweetalert2.min.css')}}">
     <style>
         .custom-col {
             flex: 0 0 20%;

@@ -1,4 +1,5 @@
 @extends('backend.app')
+
 @section('content')
 <div class="my-3 my-md-5">
     <div class="container">
@@ -9,7 +10,8 @@
                   <div class="card-header">
                     <h3 class="card-title">{{$sub_title}}</h3>
                     <div class="card-options align-items-center">
-                      <button class="btn btn-primary btn-add"><i class="fa fa-plus"></i> Tambah Data</button>
+                      <button class="btn btn-primary btn-add"><i class="fa fa-plus"></i> New Anime</button>
+                      <a href="#card-main" class="card-options-collapse btn btn-outline-primary" data-toggle="card-body" role="button" aria-expanded="false" aria-controls="card-main"><i class="fe fe-chevron-up"></i></a>
                     </div>
                   </div>
                   <div class="card-body " id="card-main">
@@ -18,7 +20,9 @@
                             <thead>
                               <tr>
                                 <th width="10%"></th>
-                                <th class="text-primary" width="50%">Nama Kabupaten</th>
+                                <th class="text-primary" width="50%">Episode</th>
+                                <th class="text-primary">Replies</th>
+                                <th class="text-primary">Updated</th>
                                 <th class="text-primary">Action</th>
                               </tr>
                             </thead>
@@ -52,8 +56,18 @@
             className: "text-center",
           },
           {
-            data: "nama_kabupaten",
+            data: "episode",
             className: "text-left",
+          },
+          {
+            data: "replies",
+            className: "text-center", render: function(data){
+              return `<i class="fa fa-comments"></i> ${data}`;
+            }
+          },
+          {
+            data: "date_updated",
+            className: "text-center",
           },
           {
             data: "id",
@@ -74,13 +88,8 @@
       });
     });
   $("body").on("click", ".btn-add", function () {
-    window.location.href = "{{route('admin.kabupaten.new')}}";
+    window.location.href = "{{route('admin.episode.new')}}";
   })
 
-  $("body").on("click", ".btn-edit", function () {
-    var Id = $(this).attr("data-id");
-    var url = "{{ route('admin.kabupaten.edit', ':id') }}".replace(':id', Id);
-    window.location.href = url;
-  })
 </script>
 @endsection
