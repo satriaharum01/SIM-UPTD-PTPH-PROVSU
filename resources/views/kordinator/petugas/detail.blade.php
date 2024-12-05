@@ -32,6 +32,10 @@
 @section('js')
 <script>
   
+  var kabupaten_id = {{$load->kabupaten_id ?? 0}};
+  var user_id = {{$load->user_id ?? 0}};
+  var wilayah_kerja_id = {{$load->wilayah_kerja_id ?? 0}};
+  
   $("body").on("click", ".btn-back", function () {
     window.location.href = "{{route('admin.kabupaten')}}";
   })
@@ -79,6 +83,9 @@
             }
         });
 
+        jQuery("#compose-form select[name=kabupaten_id]").val(kabupaten_id);
+        jQuery("#compose-form select[name=user_id]").val(user_id);
+        jQuery("#compose-form select[name=wilayah_kerja_id]").val(wilayah_kerja_id);
   
   })
 </script>

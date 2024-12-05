@@ -78,6 +78,7 @@
         ],
       });
     });
+    
   $("body").on("click", ".btn-add", function () {
     window.location.href = "{{route('kordinator.petugas.new')}}";
   })

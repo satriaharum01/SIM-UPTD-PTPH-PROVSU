@@ -64,7 +64,10 @@
                     <a href="{{route('kordinator.petugas')}}" class="nav-link {{ (request()->is('kordinator/petugas')) ? 'active' : '' }} {{ (request()->is('kordinator/petugas/*')) ? 'active' : '' }}"><i class="fe fe-users"></i> Petugas</a>
                   </li>
                   <li class="nav-item dropdown">
-                    <a href="{{route('admin.kabupaten')}}" class="nav-link {{ (request()->is('admin/kabupaten')) ? 'active' : '' }} {{ (request()->is('admin/kabupaten/*')) ? 'active' : '' }}"><i class="fe fe-grid"></i> Kabupaten</a>
+                    <a href="{{route('kordinator.kecamatan')}}" class="nav-link {{ (request()->is('kordinator/kecamatan')) ? 'active' : '' }} {{ (request()->is('kordinator/kecamatan/*')) ? 'active' : '' }}"><i class="fe fe-grid"></i> Kecamatan</a>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a href="{{route('kordinator.wilayahKerja')}}" class="nav-link {{ (request()->is('kordinator/wilayah_kerja')) ? 'active' : '' }} {{ (request()->is('kordinator/wilayah_kerja/*')) ? 'active' : '' }}"><i class="fa fa-route"></i> Wilayah Kerja</a>
                   </li>
                   <li class="nav-item dropdown">
                     <a href="{{route('admin.laporan')}}" class="nav-link {{ (request()->is('admin/laporan')) ? 'active' : '' }} {{ (request()->is('admin/laporan/*')) ? 'active' : '' }}"><i class="fe fe-file-text"></i> Laporan</a>

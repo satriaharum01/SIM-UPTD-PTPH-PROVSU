@@ -5,8 +5,8 @@
         @if ($type == 'textarea')
         <textarea class="form-control" name="{{$field}}" cols="30" rows="3">{{$value}}</textarea>
         @elseif($type == 'select')
-        <select class="form-control" name="field" id="{{$field}}">
-            <option value="" selected disabled>-- Pilih {{ucwords(str_replace(['_id', '_'], [' ', ' '], $field))}}</option>
+        <select class="form-control" name="{{$field}}" id="{{$field}}">
+            <option value="0" selected disabled>-- Pilih {{ucwords(str_replace(['_id', '_'], [' ', ' '], $field))}}</option>
         </select>
         @else
         <input type="{{$type}}" class="form-control" name="{{$field}}" value="{{$value}}"/>
