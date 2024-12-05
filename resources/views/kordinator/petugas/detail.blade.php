@@ -37,7 +37,7 @@
   var wilayah_kerja_id = {{$load->wilayah_kerja_id ?? 0}};
   
   $("body").on("click", ".btn-back", function () {
-    window.location.href = "{{route('admin.kabupaten')}}";
+    window.location.href = "{{route('kordinator.petugas')}}";
   })
   $(function () {
     //Kabupaten

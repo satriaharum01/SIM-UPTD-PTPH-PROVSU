@@ -32,29 +32,33 @@
 @section('js')
 <script>
   
-  var kabupaten_id = {{$load->kabupaten_id ?? 0}};
-  
+  var kecamatan_id = {{$load->kecamatan_id ?? 0}};
   $("body").on("click", ".btn-back", function () {
-    window.location.href = "{{route('kordinator.kecamatan')}}";
+    window.location.href = "{{route('kordinator.wilayah_kerja')}}";
   })
 
 </script>
+
 <script>
-  $(function () {
-    //Kabupaten
+  
+$(function () {
+    //Kecamatan
     $.ajax({
-       url: "{{ url('/find/kabupaten/'.Auth::user()->kabupaten_id)}}",
-       type: "GET",
-       cache: false,
-       dataType: 'json',
-       success: function(dataResult) {
-           console.log(dataResult);
-           var resultData = dataResult.data;
-           $.each(resultData, function(index, row) {
-             $('#kabupaten_id').append('<option value="' + row.id + '" selected>' + row.nama_kabupaten + '</option>');
-           })
-       }
-      });
-    })
+            url: "{{ url('/find/kecamatan/'.Auth::user()->kabupaten_id)}}",
+            type: "GET",
+            cache: false,
+            dataType: 'json',
+            success: function(dataResult) {
+                console.log(dataResult);
+                var resultData = dataResult.data;
+                $.each(resultData, function(index, row) {
+                  $('#kecamatan_id').append('<option value="' + row.id + '">' + row.nama_kecamatan + '</option>');
+                })
+            }
+        });
+
+        jQuery("#compose-form select[name=kecamatan_id]").val(kecamatan_id);
+  
+  })
 </script>
 @endsection

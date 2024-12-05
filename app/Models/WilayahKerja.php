@@ -20,4 +20,14 @@ class WilayahKerja extends Model
     {
         return $this->inputType;
     }
+
+    public function cariKecamatan()
+    {
+        return $this->belongsTo('App\Models\Kecamatan', 'kecamatan_id', 'id')->withDefault(function ($data) {
+            if (collect($data->getFillable())->every(fn($attr) => $data->$attr === null)) {
+                return null;
+            }
+            return $data;
+        });
+    }
 }

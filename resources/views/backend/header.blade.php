@@ -67,7 +67,7 @@
                     <a href="{{route('kordinator.kecamatan')}}" class="nav-link {{ (request()->is('kordinator/kecamatan')) ? 'active' : '' }} {{ (request()->is('kordinator/kecamatan/*')) ? 'active' : '' }}"><i class="fe fe-grid"></i> Kecamatan</a>
                   </li>
                   <li class="nav-item dropdown">
-                    <a href="{{route('kordinator.wilayahKerja')}}" class="nav-link {{ (request()->is('kordinator/wilayah_kerja')) ? 'active' : '' }} {{ (request()->is('kordinator/wilayah_kerja/*')) ? 'active' : '' }}"><i class="fa fa-route"></i> Wilayah Kerja</a>
+                    <a href="{{route('kordinator.wilayah_kerja')}}" class="nav-link {{ (request()->is('kordinator/wilayah_kerja')) ? 'active' : '' }} {{ (request()->is('kordinator/wilayah_kerja/*')) ? 'active' : '' }}"><i class="fa fa-route"></i> Wilayah Kerja</a>
                   </li>
                   <li class="nav-item dropdown">
                     <a href="{{route('admin.laporan')}}" class="nav-link {{ (request()->is('admin/laporan')) ? 'active' : '' }} {{ (request()->is('admin/laporan/*')) ? 'active' : '' }}"><i class="fe fe-file-text"></i> Laporan</a>

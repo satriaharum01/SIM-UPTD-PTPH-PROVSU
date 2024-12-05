@@ -27,4 +27,44 @@ class Laporan extends Model
     {
         return $this->inputType;
     }
+    
+    public function cariPetugas()
+    {
+        return $this->belongsTo('App\Models\Petugas', 'petugas_id', 'id')->withDefault(function ($data) {
+            if (collect($data->getFillable())->every(fn($attr) => $data->$attr === null)) {
+                return null;
+            }
+            return $data;
+        });
+    }
+    
+    public function cariWilayahKerja()
+    {
+        return $this->belongsTo('App\Models\WilayahKerja', 'wilayah_kerja_id', 'id')->withDefault(function ($data) {
+            if (collect($data->getFillable())->every(fn($attr) => $data->$attr === null)) {
+                return null;
+            }
+            return $data;
+        });
+    }
+    
+    public function cariTanaman()
+    {
+        return $this->belongsTo('App\Models\Tanaman', 'tanaman_id', 'id')->withDefault(function ($data) {
+            if (collect($data->getFillable())->every(fn($attr) => $data->$attr === null)) {
+                return null;
+            }
+            return $data;
+        });
+    }
+
+    public function cariOPT()
+    {
+        return $this->belongsTo('App\Models\OPT', 'opt_id', 'id')->withDefault(function ($data) {
+            if (collect($data->getFillable())->every(fn($attr) => $data->$attr === null)) {
+                return null;
+            }
+            return $data;
+        });
+    }
 }

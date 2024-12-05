@@ -116,4 +116,15 @@ class HomeController extends Controller
             ->make(true);
     }
 
+    public function findKecamatan($id)
+    {
+        $data = Kecamatan::select('*')
+                ->where('kabupaten_id',$id)
+                ->orderby('nama_kecamatan', 'ASC')
+                ->get();
+
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->make(true);
+    }
 }

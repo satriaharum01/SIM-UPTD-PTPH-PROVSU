@@ -25,6 +25,7 @@ Route::prefix('get')->name('get.')->group(function () {
 
 Route::prefix('find')->name('find.')->group(function () {
     Route::get('/kabupaten/{id}', [App\Http\Controllers\HomeController::class, 'findKabupaten']);
+    Route::get('/kecamatan/{id}', [App\Http\Controllers\HomeController::class, 'findKecamatan']);
 });
 
 //Login
@@ -59,9 +60,18 @@ Route::prefix('kordinator')->name('kordinator.')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\KordinatorDashboardController::class, 'index'])->name('dashboard');
     Route::get('/petugas', [App\Http\Controllers\KordinatorPetugasController::class, 'index'])->name('petugas');
     Route::get('/kecamatan', [App\Http\Controllers\KordinatorKecamatanController::class, 'index'])->name('kecamatan');
-    Route::get('/wilayah_kerja', [App\Http\Controllers\KordinatorPetugasController::class, 'index'])->name('wilayahKerja');
+    Route::get('/wilayah_kerja', [App\Http\Controllers\KordinatorWilayahKerjaController::class, 'index'])->name('wilayah_kerja');
     Route::get('/laporan', [App\Http\Controllers\AdminKabupatenController::class, 'index'])->name('laporan');
 
+    Route::prefix('petugas')->name('petugas.')->group(function () {
+        Route::get('/tambah', [App\Http\Controllers\KordinatorPetugasController::class, 'new'])->name('new');
+        Route::get('/edit/{id}', [App\Http\Controllers\KordinatorPetugasController::class, 'edit'])->name('edit');
+        Route::POST('/save', [App\Http\Controllers\KordinatorPetugasController::class, 'store']);
+        Route::POST('/update/{id}', [App\Http\Controllers\KordinatorPetugasController::class, 'update']);
+        Route::GET('/delete/{id}', [App\Http\Controllers\KordinatorPetugasController::class, 'destroy']);
+        Route::get('/json', [App\Http\Controllers\KordinatorPetugasController::class, 'json']);
+        Route::get('/find/{id}', [App\Http\Controllers\KordinatorPetugasController::class, 'find']);
+    });
 
     Route::prefix('kecamatan')->name('kecamatan.')->group(function () {
         Route::get('/tambah', [App\Http\Controllers\KordinatorKecamatanController::class, 'new'])->name('new');
@@ -72,14 +82,14 @@ Route::prefix('kordinator')->name('kordinator.')->group(function () {
         Route::get('/json', [App\Http\Controllers\KordinatorKecamatanController::class, 'json']);
         Route::get('/find/{id}', [App\Http\Controllers\KordinatorKecamatanController::class, 'find']);
     });
-
-    Route::prefix('petugas')->name('petugas.')->group(function () {
-        Route::get('/tambah', [App\Http\Controllers\KordinatorPetugasController::class, 'new'])->name('new');
-        Route::get('/edit/{id}', [App\Http\Controllers\KordinatorPetugasController::class, 'edit'])->name('edit');
-        Route::POST('/save', [App\Http\Controllers\KordinatorPetugasController::class, 'store']);
-        Route::POST('/update/{id}', [App\Http\Controllers\KordinatorPetugasController::class, 'update']);
-        Route::GET('/delete/{id}', [App\Http\Controllers\KordinatorPetugasController::class, 'destroy']);
-        Route::get('/json', [App\Http\Controllers\KordinatorPetugasController::class, 'json']);
-        Route::get('/find/{id}', [App\Http\Controllers\KordinatorPetugasController::class, 'find']);
+    
+    Route::prefix('wilayah_kerja')->name('wilayah_kerja.')->group(function () {
+        Route::get('/tambah', [App\Http\Controllers\KordinatorWilayahKerjaController::class, 'new'])->name('new');
+        Route::get('/edit/{id}', [App\Http\Controllers\KordinatorWilayahKerjaController::class, 'edit'])->name('edit');
+        Route::POST('/save', [App\Http\Controllers\KordinatorWilayahKerjaController::class, 'store']);
+        Route::POST('/update/{id}', [App\Http\Controllers\KordinatorWilayahKerjaController::class, 'update']);
+        Route::GET('/delete/{id}', [App\Http\Controllers\KordinatorWilayahKerjaController::class, 'destroy']);
+        Route::get('/json', [App\Http\Controllers\KordinatorWilayahKerjaController::class, 'json']);
+        Route::get('/find/{id}', [App\Http\Controllers\KordinatorWilayahKerjaController::class, 'find']);
     });
 });

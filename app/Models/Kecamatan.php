@@ -20,4 +20,14 @@ class Kecamatan extends Model
     {
         return $this->inputType;
     }
+
+    public function cariKabupaten()
+    {
+        return $this->belongsTo('App\Models\Kabupaten', 'kabupaten_id', 'id')->withDefault(function ($data) {
+            if (collect($data->getFillable())->every(fn($attr) => $data->$attr === null)) {
+                return null;
+            }
+            return $data;
+        });
+    }
 }
