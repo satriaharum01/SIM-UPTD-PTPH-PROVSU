@@ -93,3 +93,21 @@ Route::prefix('kordinator')->name('kordinator.')->group(function () {
         Route::get('/find/{id}', [App\Http\Controllers\KordinatorWilayahKerjaController::class, 'find']);
     });
 });
+
+
+//PETUGAS ROUTES
+Route::prefix('petugas')->name('petugas.')->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\PetugasDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/laporan', [App\Http\Controllers\PetugasLaporanController::class, 'index'])->name('laporan');
+
+
+    Route::prefix('laporan')->name('laporan.')->group(function () {
+        Route::get('/tambah', [App\Http\Controllers\PetugasLaporanController::class, 'new'])->name('new');
+        Route::get('/edit/{id}', [App\Http\Controllers\PetugasLaporanController::class, 'edit'])->name('edit');
+        Route::POST('/save', [App\Http\Controllers\PetugasLaporanController::class, 'store']);
+        Route::POST('/update/{id}', [App\Http\Controllers\PetugasLaporanController::class, 'update']);
+        Route::GET('/delete/{id}', [App\Http\Controllers\PetugasLaporanController::class, 'destroy']);
+        Route::get('/json', [App\Http\Controllers\PetugasLaporanController::class, 'json']);
+        Route::get('/find/{id}', [App\Http\Controllers\PetugasLaporanController::class, 'find']);
+    });
+});

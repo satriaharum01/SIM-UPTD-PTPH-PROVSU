@@ -73,7 +73,12 @@
                     <a href="{{route('admin.laporan')}}" class="nav-link {{ (request()->is('admin/laporan')) ? 'active' : '' }} {{ (request()->is('admin/laporan/*')) ? 'active' : '' }}"><i class="fe fe-file-text"></i> Laporan</a>
                   </li>
                   @else
-
+                  <li class="nav-item">
+                    <a href="{{route('petugas.dashboard')}}" class="nav-link {{ (request()->is('petugas/dashboard')) ? 'active' : '' }}"><i class="fe fe-home"></i> Home</a>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a href="{{route('petugas.laporan')}}" class="nav-link {{ (request()->is('petugas/laporan')) ? 'active' : '' }} {{ (request()->is('petugas/laporan/*')) ? 'active' : '' }}"><i class="fe fe-file-text"></i> Laporan</a>
+                  </li>
                   @endif
                 </ul>
               </div>
