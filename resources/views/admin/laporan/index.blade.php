@@ -25,7 +25,6 @@
                                 <th class="text-primary">Tanggal</th>
                                 <th class="text-primary">Tingkat Kerusakan</th>
                                 <th class="text-primary">Luas Serangan</th>
-                                <th class="text-primary" width="20%">Action</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -84,21 +83,6 @@
           {
             data: "luas_serangan",
             className: "text-left",
-          },
-          {
-            data: "id",
-            className: "text-center",
-            orderable: false,
-            searchable: false,
-            render: function (data, type, row) {
-              return (
-                  '<button type="button" class="btn btn-success btn-edit" data-id="' + data +'"><i class="fa fa-edit"></i> </button>\
-                  <a class="btn btn-danger btn-hapus" data-id="' + data +'" data-handler="data" href="delete/'+data +'">\
-                  <i class="fa fa-trash"></i> </a> \
-				  	      <form id="delete-form-' +data +'-data" action="{{ Request::url()  }}/delete/'+data+'" method="GET" style="display: none;">\
-                  </form>'
-              );
-            },
           },
         ],
       });
