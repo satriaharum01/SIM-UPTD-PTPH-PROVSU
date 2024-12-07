@@ -41,7 +41,9 @@ Route::prefix('account')->group(function () {
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\AdminDashboardController::class, 'index'])->name('dashboard');
     Route::get('/kabupaten', [App\Http\Controllers\AdminKabupatenController::class, 'index'])->name('kabupaten');
-    Route::get('/laporan', [App\Http\Controllers\AdminKabupatenController::class, 'index'])->name('laporan');
+    Route::get('/tanaman', [App\Http\Controllers\AdminTanamanController::class, 'index'])->name('tanaman');
+    Route::get('/opt', [App\Http\Controllers\AdminOPTController::class, 'index'])->name('opt');
+    Route::get('/laporan', [App\Http\Controllers\AdminLaporanController::class, 'index'])->name('laporan');
 
 
     Route::prefix('kabupaten')->name('kabupaten.')->group(function () {
@@ -52,6 +54,33 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::GET('/delete/{id}', [App\Http\Controllers\AdminKabupatenController::class, 'destroy']);
         Route::get('/json', [App\Http\Controllers\AdminKabupatenController::class, 'json']);
         Route::get('/find/{id}', [App\Http\Controllers\AdminKabupatenController::class, 'find']);
+    });
+
+    Route::prefix('tanaman')->name('tanaman.')->group(function () {
+        Route::get('/tambah', [App\Http\Controllers\AdminTanamanController::class, 'new'])->name('new');
+        Route::get('/edit/{id}', [App\Http\Controllers\AdminTanamanController::class, 'edit'])->name('edit');
+        Route::POST('/save', [App\Http\Controllers\AdminTanamanController::class, 'store']);
+        Route::POST('/update/{id}', [App\Http\Controllers\AdminTanamanController::class, 'update']);
+        Route::GET('/delete/{id}', [App\Http\Controllers\AdminTanamanController::class, 'destroy']);
+        Route::get('/json', [App\Http\Controllers\AdminTanamanController::class, 'json']);
+        Route::get('/find/{id}', [App\Http\Controllers\AdminTanamanController::class, 'find']);
+    });
+
+    Route::prefix('opt')->name('opt.')->group(function () {
+        Route::get('/tambah', [App\Http\Controllers\AdminOPTController::class, 'new'])->name('new');
+        Route::get('/edit/{id}', [App\Http\Controllers\AdminOPTController::class, 'edit'])->name('edit');
+        Route::POST('/save', [App\Http\Controllers\AdminOPTController::class, 'store']);
+        Route::POST('/update/{id}', [App\Http\Controllers\AdminOPTController::class, 'update']);
+        Route::GET('/delete/{id}', [App\Http\Controllers\AdminOPTController::class, 'destroy']);
+        Route::get('/json', [App\Http\Controllers\AdminOPTController::class, 'json']);
+        Route::get('/find/{id}', [App\Http\Controllers\AdminOPTController::class, 'find']);
+    });
+
+    Route::prefix('laporan')->name('laporan.')->group(function () {
+        Route::POST('/update/{id}', [App\Http\Controllers\AdminLaporanController::class, 'update']);
+        Route::GET('/delete/{id}', [App\Http\Controllers\AdminLaporanController::class, 'destroy']);
+        Route::get('/json', [App\Http\Controllers\AdminLaporanController::class, 'json']);
+        Route::get('/find/{id}', [App\Http\Controllers\AdminLaporanController::class, 'find']);
     });
 });
 
@@ -82,7 +111,7 @@ Route::prefix('kordinator')->name('kordinator.')->group(function () {
         Route::get('/json', [App\Http\Controllers\KordinatorKecamatanController::class, 'json']);
         Route::get('/find/{id}', [App\Http\Controllers\KordinatorKecamatanController::class, 'find']);
     });
-    
+
     Route::prefix('wilayah_kerja')->name('wilayah_kerja.')->group(function () {
         Route::get('/tambah', [App\Http\Controllers\KordinatorWilayahKerjaController::class, 'new'])->name('new');
         Route::get('/edit/{id}', [App\Http\Controllers\KordinatorWilayahKerjaController::class, 'edit'])->name('edit');
@@ -99,7 +128,6 @@ Route::prefix('kordinator')->name('kordinator.')->group(function () {
 Route::prefix('petugas')->name('petugas.')->group(function () {
     Route::get('/dashboard', [App\Http\Controllers\PetugasDashboardController::class, 'index'])->name('dashboard');
     Route::get('/laporan', [App\Http\Controllers\PetugasLaporanController::class, 'index'])->name('laporan');
-
 
     Route::prefix('laporan')->name('laporan.')->group(function () {
         Route::get('/tambah', [App\Http\Controllers\PetugasLaporanController::class, 'new'])->name('new');

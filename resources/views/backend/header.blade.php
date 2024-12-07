@@ -54,6 +54,12 @@
                     <a href="{{route('admin.kabupaten')}}" class="nav-link {{ (request()->is('admin/kabupaten')) ? 'active' : '' }} {{ (request()->is('admin/kabupaten/*')) ? 'active' : '' }}"><i class="fe fe-grid"></i> Kabupaten</a>
                   </li>
                   <li class="nav-item dropdown">
+                    <a href="{{route('admin.tanaman')}}" class="nav-link {{ (request()->is('admin/tanaman')) ? 'active' : '' }} {{ (request()->is('admin/tanaman/*')) ? 'active' : '' }}"><i class="fa fa-leaf"></i> Tanaman</a>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a href="{{route('admin.opt')}}" class="nav-link {{ (request()->is('admin/opt')) ? 'active' : '' }} {{ (request()->is('admin/opt/*')) ? 'active' : '' }}"><i class="fa fa-virus"></i> OPT</a>
+                  </li>
+                  <li class="nav-item dropdown">
                     <a href="{{route('admin.laporan')}}" class="nav-link {{ (request()->is('admin/laporan')) ? 'active' : '' }} {{ (request()->is('admin/laporan/*')) ? 'active' : '' }}"><i class="fe fe-file-text"></i> Laporan</a>
                   </li>
                   @elseif(Auth::user()->level == 'Kordinator Kabupaten')
