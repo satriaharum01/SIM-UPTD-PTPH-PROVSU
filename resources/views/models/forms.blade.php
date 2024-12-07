@@ -1,5 +1,6 @@
-<?php 
-    use App\Http\helpers\Formula;
+<?php
+use App\Http\helpers\Formula;
+
 ?>
 
 
@@ -12,14 +13,18 @@
         <select class="form-control" name="{{$field}}" id="{{$field}}">
             @if($field == 'tingkat_kerusakan')
                 @foreach(Formula::$tingkatKerusakan as $row)
-                <option value="{{$row}}">{{ucfirst($row)}}</option>
+                <option value="{{$row}}" @if($row == $value) selected @endif>{{ucfirst($row)}}</option>
                 @endforeach
             @else
             <option value="0" selected disabled>-- Pilih {{ucwords(str_replace(['_id', '_'], [' ', ' '], $field))}}</option>
             @endif
         </select>
         @else
-        <input type="{{$type}}" class="form-control" name="{{$field}}" value="{{$value}}"/>
+        @if($type == 'number')
+            <input type="{{$type}}" step="0.001" class="form-control" name="{{$field}}" value="{{$value}}"/>
+        @else
+            <input type="{{$type}}" class="form-control" name="{{$field}}" value="{{$value}}"/>
+        @endif
         @endif
     </div>
 </div>

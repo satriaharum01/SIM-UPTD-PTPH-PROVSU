@@ -18,7 +18,9 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('la
 Route::prefix('get')->name('get.')->group(function () {
     Route::get('/kabupaten', [App\Http\Controllers\HomeController::class, 'getKabupaten']);
     Route::get('/users/{id}', [App\Http\Controllers\HomeController::class, 'getUsersLevel']);
-    Route::get('/wilayah/{id}', [App\Http\Controllers\HomeController::class, 'getWilayahKerja']);
+    Route::get('/wilayah_kerja/{id}', [App\Http\Controllers\HomeController::class, 'getWilayahKerja']);
+    Route::get('/tanaman', [App\Http\Controllers\HomeController::class, 'getTanaman']);
+    Route::get('/opt', [App\Http\Controllers\HomeController::class, 'getOPT']);
 });
 
 //FIND ROUTER PUBLIC
@@ -26,6 +28,7 @@ Route::prefix('get')->name('get.')->group(function () {
 Route::prefix('find')->name('find.')->group(function () {
     Route::get('/kabupaten/{id}', [App\Http\Controllers\HomeController::class, 'findKabupaten']);
     Route::get('/kecamatan/{id}', [App\Http\Controllers\HomeController::class, 'findKecamatan']);
+    Route::get('/petugas/{id}', [App\Http\Controllers\HomeController::class, 'findPetugas']);
 });
 
 //Login
@@ -90,7 +93,7 @@ Route::prefix('kordinator')->name('kordinator.')->group(function () {
     Route::get('/petugas', [App\Http\Controllers\KordinatorPetugasController::class, 'index'])->name('petugas');
     Route::get('/kecamatan', [App\Http\Controllers\KordinatorKecamatanController::class, 'index'])->name('kecamatan');
     Route::get('/wilayah_kerja', [App\Http\Controllers\KordinatorWilayahKerjaController::class, 'index'])->name('wilayah_kerja');
-    Route::get('/laporan', [App\Http\Controllers\AdminKabupatenController::class, 'index'])->name('laporan');
+    Route::get('/laporan', [App\Http\Controllers\KordinatorLaporanController::class, 'index'])->name('laporan');
 
     Route::prefix('petugas')->name('petugas.')->group(function () {
         Route::get('/tambah', [App\Http\Controllers\KordinatorPetugasController::class, 'new'])->name('new');
@@ -120,6 +123,13 @@ Route::prefix('kordinator')->name('kordinator.')->group(function () {
         Route::GET('/delete/{id}', [App\Http\Controllers\KordinatorWilayahKerjaController::class, 'destroy']);
         Route::get('/json', [App\Http\Controllers\KordinatorWilayahKerjaController::class, 'json']);
         Route::get('/find/{id}', [App\Http\Controllers\KordinatorWilayahKerjaController::class, 'find']);
+    });
+    
+    Route::prefix('laporan')->name('laporan.')->group(function () {
+        Route::POST('/update/{id}', [App\Http\Controllers\KordinatorLaporanController::class, 'update']);
+        Route::GET('/delete/{id}', [App\Http\Controllers\KordinatorLaporanController::class, 'destroy']);
+        Route::get('/json', [App\Http\Controllers\KordinatorLaporanController::class, 'json']);
+        Route::get('/find/{id}', [App\Http\Controllers\KordinatorLaporanController::class, 'find']);
     });
 });
 

@@ -82,8 +82,8 @@
             className: "text-left",
           },
           {
-            data: "luas_serangan",
-            className: "text-left",
+            data: "luas_terserang",
+            className: "text-left", render: function(data){return data +' ha';}
           },
           {
             data: "id",

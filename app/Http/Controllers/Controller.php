@@ -70,9 +70,23 @@ class Controller extends BaseController
 
     public function count_laporan_menunggu()
     {
-        $verify = Verifikasi::select('laporan_id')->where('verifikator_id', Auth::user()->id)->get()->toArray();
-        $result = Laporan::select('*')->whereNotIn('laporan_id', $verify)->count();
-
+        switch (Auth::user()->level) {
+            case 'Admin Provinsi':
+                $verify = Verifikasi::select('laporan_id')->where('verifikator_id', Auth::user()->id)->get()->toArray();
+                $result = Laporan::select('*')->whereNotIn('laporan_id', $verify)->count();
+                break;
+            case 'Kordinator Kabupaten':
+                $kecamatan = Kecamatan::select('id')->where('kabupaten_id', Auth::user()->kabupaten_id)->get()->toArray();
+                $wilayahKerja = WilayahKerja::select('id')->whereIn('kecamatan_id', $kecamatan)->get()->toArray();
+                $verify = Verifikasi::select('laporan_id')->where('verifikator_id', Auth::user()->id)->get()->toArray();
+                $result = Laporan::select('*')->where('wilayah_kerja_id', $wilayahKerja)->whereNotIn('laporan_id', $verify)->count();
+                break;
+            case 'Petugas Lapangan':
+                $petugas = Petugas::select('*')->where('user_id', Auth::user()->id)->first();
+                $verify = Verifikasi::select('laporan_id')->get()->toArray();
+                $result = Laporan::select('*')->where('petugas_id', $petugas->id)->whereNotIn('laporan_id', $verify)->count();
+                break;
+        }
         return $result;
     }
 
@@ -88,32 +102,67 @@ class Controller extends BaseController
     {
         return Kabupaten::select('*')->count();
     }
-    
+
     public function count_kecamatan()
     {
         return Kecamatan::select('*')->count();
     }
-    
+
     public function count_kecamatan_kordinator()
     {
-        $result = Kecamatan::select('*')->where('kabupaten_id',Auth::user()->kabupaten_id)->count();
+        $result = Kecamatan::select('*')->where('kabupaten_id', Auth::user()->kabupaten_id)->count();
 
         return $result;
     }
-    
+
     public function count_wilayahKerja()
     {
         return WilayahKerja::select('*')->count();
     }
-    
-    
+
+    public function count_wilayahKerja_kordinator()
+    {
+        $kecamatan = Kecamatan::select('id')->where('kabupaten_id', Auth::user()->kabupaten_id)->get()->toArray();
+        $result = WilayahKerja::select('*')->whereIn('kecamatan_id', $kecamatan)->count();
+
+        return $result;
+    }
+
+    public function get_wilayahKerja_petugas()
+    {
+        $petugas = Petugas::select('wilayah_kerja_id')->where('user_id', Auth::user()->id)->get()->toArray();
+        $wilayahKerja = WilayahKerja::select('nama_daerah')->whereIn('id', $petugas)->get();
+        $result = '';
+        foreach ($wilayahKerja as $row) {
+            if (!next($wilayahKerja)) {
+                $result .= $row->nama_daerah;
+            } else {
+                $result .= $row->nama_daerah.', ';
+            }
+        }
+
+        return $result;
+    }
+
     public function count_tanaman()
     {
         return Tanaman::select('*')->count();
     }
-    
+
     public function count_opt()
     {
         return OPT::select('*')->count();
+    }
+
+    public function count_petugas()
+    {
+        return Petugas::select('*')->count();
+    }
+
+    public function count_petugas_kordinator()
+    {
+        $result = Petugas::select('*')->where('kabupaten_id', Auth::user()->kabupaten_id)->count();
+
+        return $result;
     }
 }

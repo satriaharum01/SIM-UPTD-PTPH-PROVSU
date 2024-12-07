@@ -58,7 +58,7 @@ class PetugasLaporanController extends Controller
                 
         foreach($data as $row)
         {
-            $row->nama_kecamatan = $row->cariKecamatan->nama_kecamatan;
+            $row->nama_kecamatan = $row->cariWilayahKerja->cariKecamatan->nama_kecamatan;
             $row->wilayah_kerja = $row->cariWilayahKerja->nama_daerah;
             $row->jenis_opt = $row->cariOPT->nama_opt;
             $row->tanaman = $row->cariTanaman->nama_tanaman;

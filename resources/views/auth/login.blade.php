@@ -4,9 +4,9 @@
 
 
 <div class="text-center mb-4">
-    <a href="." class="navbar-brand navbar-brand-autodark"><img src="<?= asset('landing/login/assets/img/nav-logo.png') ?>" height="100" alt=""></a>
+    <a href="." class="navbar-brand navbar-brand-autodark"><img src="<?= asset('/assets/login/img/nav-logo.png') ?>" height="100" alt=""></a>
 </div>
-<form class="card card-md" action="{{ route('custom.login') }}" method="POST" autocomplete="off" style="z-index:1000;">
+<form class="border-1 border-warning card card-md text-white" action="{{ route('custom.login') }}" method="POST" autocomplete="off" style="z-index:1000;background: rgba(0, 0, 0, 0.3);">
     @csrf
     <div class="card-body">
         <h2 class="card-title text-center mb-4">Masuk menggunakan Akunmu</h2>
@@ -22,14 +22,14 @@
         @endif
         <div class="mb-3">
             <label class="form-label">Email</label>
-            <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" placeholder="Masukan email" autocomplete="off">
+            <input type="email" name="email" class="text-black form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" placeholder="Masukan email" autocomplete="off">
         </div>
         <div class="mb-2">
             <label class="form-label">
                 Password
             </label>
             <div class="input-group input-group-flat">
-                <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" value="{{ old('password') }}" placeholder="Password" autocomplete="off">
+                <input type="password" name="password" class="text-black form-control @error('password') is-invalid @enderror" value="{{ old('password') }}" placeholder="Password" autocomplete="off">
             </div>
             @error('password')
             <div class="invalid-feedback">

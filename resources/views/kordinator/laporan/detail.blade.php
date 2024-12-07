@@ -33,9 +33,6 @@
 <script>
   
   var kecamatan_id = {{$load->kecamatan_id ?? 0}};
-  var wilayah_kerja_id = {{$load->wilayah_kerja_id ?? 0}};
-  var tanaman_id = {{$load->tanaman_id ?? 0}};
-  var opt_id = {{$load->opt_id ?? 0}};
   $("body").on("click", ".btn-back", function () {
     window.location.href = "{{route('petugas.laporan')}}";
   })
@@ -56,7 +53,7 @@ $(function () {
             console.log(dataResult);
             var resultData = dataResult.data;
             $.each(resultData, function(index, row) {
-              $('#petugas_id').append('<option value="' + row.id + '" selected>' + row.name + '</option>');
+              $('#petugas_id').append('<option value="' + row.id + '">' + row.name + '</option>');
             })
         }
     });
@@ -71,12 +68,7 @@ $(function () {
             console.log(dataResult);
             var resultData = dataResult.data;
             $.each(resultData, function(index, row) {
-              if(tanaman_id === row.id)
-              {
-                $('#tanaman_id').append('<option value="' + row.id + '" selected>' + row.nama_tanaman + '</option>');
-              }else{
-                $('#tanaman_id').append('<option value="' + row.id + '">' + row.nama_tanaman + '</option>');
-              }
+              $('#tanaman_id').append('<option value="' + row.id + '">' + row.nama_tanaman + '</option>');
             })
         }
     });
@@ -91,19 +83,14 @@ $(function () {
             console.log(dataResult);
             var resultData = dataResult.data;
             $.each(resultData, function(index, row) {
-              if(opt_id === row.id)
-              {
-                $('#opt_id').append('<option value="' + row.id + '" selected>' + row.nama_opt + '</option>');
-              }else{
-                $('#opt_id').append('<option value="' + row.id + '">' + row.nama_opt + '</option>');
-              }
+              $('#opt_id').append('<option value="' + row.id + '">' + row.nama_opt + '</option>');
             })
         }
     });
 
-    //Wilayah Kerja
+    //Tanaman
     $.ajax({
-        url: "{{ url('/get/wilayah_kerja/'.Auth::user()->kabupaten_id)}}",
+        url: "{{ url('/get/tanaman/')}}",
         type: "GET",
         cache: false,
         dataType: 'json',
@@ -111,16 +98,27 @@ $(function () {
             console.log(dataResult);
             var resultData = dataResult.data;
             $.each(resultData, function(index, row) {
-              if(wilayah_kerja_id === row.id)
-              {
-                $('#wilayah_kerja_id').append('<option value="' + row.id + '" selected>' + row.nama_daerah + '</option>');
-              }else{
-                $('#wilayah_kerja_id').append('<option value="' + row.id + '">' + row.nama_daerah + '</option>');
-              }
+              $('#tanaman_id').append('<option value="' + row.id + '">' + row.nama_tanaman + '</option>');
+            })
+        }
+    });
+    //Wilayah Kerja
+    $.ajax({
+        url: "{{ url('/get/wilayah_kerja/')}}",
+        type: "GET",
+        cache: false,
+        dataType: 'json',
+        success: function(dataResult) {
+            console.log(dataResult);
+            var resultData = dataResult.data;
+            $.each(resultData, function(index, row) {
+              $('#wilayah_kerja_id').append('<option value="' + row.id + '">' + row.nama_daerah + '</option>');
             })
         }
     });
     
+    jQuery("#compose-form select[name=kecamatan_id]").val(kecamatan_id);
+  
   })
 </script>
 @endsection

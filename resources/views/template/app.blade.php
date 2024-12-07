@@ -24,7 +24,7 @@
     <link href="<?= asset('assets/login/dist/css/demo.min.css') ?>" rel="stylesheet" />
     <style>
         .bg-custom{
-            background-image: url('assets/login/img/bg-login.jpg');
+            background-image: url("{{asset('assets/login/img/bg-login.jpg')}}");
             background-size: cover;
         }
         .overlay-bg{

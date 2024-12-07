@@ -103,6 +103,31 @@ class HomeController extends Controller
             ->addIndexColumn()
             ->make(true);
     }
+    
+    public function getTanaman()
+    {
+        $data = Tanaman::select('*')
+                ->orderby('nama_tanaman', 'ASC')
+                ->get();
+
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->make(true);
+    }
+
+    
+    public function getOPT()
+    {
+        $data = OPT::select('*')
+                ->orderby('nama_opt', 'ASC')
+                ->get();
+
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->make(true);
+    }
+
+
     //FiND
     public function findKabupaten($id)
     {
@@ -122,6 +147,21 @@ class HomeController extends Controller
                 ->where('kabupaten_id',$id)
                 ->orderby('nama_kecamatan', 'ASC')
                 ->get();
+
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->make(true);
+    }
+    
+    public function findPetugas($id)
+    {
+        $data = Petugas::select('*')
+                ->where('user_id',$id)
+                ->get();
+        foreach($data as $row)
+        {
+            $row->name = $row->cariUser->name;
+        }
 
         return Datatables::of($data)
             ->addIndexColumn()

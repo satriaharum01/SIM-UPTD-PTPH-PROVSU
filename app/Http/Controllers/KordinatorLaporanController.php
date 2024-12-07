@@ -9,14 +9,14 @@ use App\Models\User;
 use Yajra\DataTables\Facades\DataTables;
 use Auth;
 
-class AdminLaporanController extends Controller
+class KordinatorLaporanController extends Controller
 {
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('is_admin');
+        $this->middleware('is_kordinator');
 
-        $this->page = 'admim/laporan';
+        $this->page = 'kordinator/laporan';
         $this->data['title'] = 'Data Laporan';
     }
 
@@ -24,7 +24,7 @@ class AdminLaporanController extends Controller
     {
         $this->data['sub_title'] = 'List Data Laporan';
 
-        return view('admin/laporan/index', $this->data);
+        return view('kordinator/laporan/index', $this->data);
     }
 
     public function json()
