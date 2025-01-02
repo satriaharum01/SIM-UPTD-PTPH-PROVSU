@@ -55,15 +55,24 @@
                           @endforeach
                           
                         <div class="form-group">  
-                          <label class="form-label">Pilih Foto</label>
-                          <input type="file" name="photos[]" id="photos" multiple required onchange="previewImages()">
-                          <button type="button" onclick="resetForm()" class="btn btn-danger btn-reset" hidden><i class="fa fa-refresh"></i></button>
-                          <div id="preview" style="display: flex; gap: 10px; flex-wrap: wrap;"></div>
+                          <label class="form-label">Bukti Foto</label>
+                          <div id="preview" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                          @if(count($photos) > 1)
+                            @foreach($photos as $photo)
+                                <div class="photo">
+                                    <a href="{{ asset('assets/images/laporan/'.$photo->id.'.jpg') }}" data-lightbox="gallery">
+                                      <img src="{{ asset('assets/images/laporan/'.$photo->id.'.jpg') }}"  alt="Foto" style="width: 100px; height: auto; margin: 5px;">
+                                    </a>
+                                </div>
+                            @endforeach
+                          @else
+                          <h4>Tidak Ada Data !</h4>
+                          @endif
+                          </div>
                         </div>
                     </div>
                     <div class="card-footer">
                       <button type="reset" class="btn btn-danger btn-back" data-bs-dismiss="modal">Kembali</button>
-                      <button type="submit" class="btn btn-primary btn-simpan">Simpan</button>
                       <div class="float-right">{{env('APP_NAME')}} - {{$title}}</div>
                     </div>
                   </form>
@@ -74,41 +83,6 @@
 </div>
 @endsection
 @section('js')
-<script>
-    function previewImages() {
-            let preview = document.getElementById('preview'); // Tempat menampilkan preview
-            let files = document.getElementById('photos').files; // File yang dipilih
-
-            preview.innerHTML = ''; // Mengosongkan preview sebelumnya
-
-            if (files) {
-                Array.from(files).forEach(file => {
-                    let reader = new FileReader(); // Membaca file sebagai URL data
-                    reader.onload = function (e) {
-                        let img = document.createElement('img'); // Membuat elemen gambar
-                        img.src = e.target.result; // Menetapkan sumber gambar
-                        img.style.width = '100px'; // Ukuran gambar
-                        img.style.height = 'auto';
-                        img.style.margin = '5px';
-                        preview.appendChild(img); // Menambahkan gambar ke preview
-                    }
-                    reader.readAsDataURL(file); // Membaca file sebagai URL
-                });
-                $('.btn-reset').prop('hidden',false);
-            }
-        }
-
-        // Fungsi untuk mereset formulir dan menghapus preview
-        function resetForm() {
-            let input = document.getElementById('photos'); // Input file
-            let preview = document.getElementById('preview'); // Tempat preview
-
-            input.value = ''; // Mengosongkan input file
-            preview.innerHTML = ''; // Mengosongkan preview
-            
-            $('.btn-reset').prop('hidden',true);
-        }
-</script>
 <script>
   
   var kecamatan_id = {{$load->kecamatan_id ?? 0}};

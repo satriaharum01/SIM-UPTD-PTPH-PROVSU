@@ -56,6 +56,10 @@ return [
             'throw' => false,
         ],
 
+        'img_upload' => [
+            'driver' => 'local',
+            'root'   => public_path() . '/assets/images/laporan',
+        ],
     ],
 
     /*

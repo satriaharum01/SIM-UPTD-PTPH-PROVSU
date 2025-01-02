@@ -7,6 +7,7 @@
         const basePath = "{{asset('assets/js/') }}";
     </script>
     <link  rel="stylesheet"  href="{{asset('assets/css/datatables.min.css')}}"/>
+    <link  rel="stylesheet"  href="{{asset('assets/css/lightbox.min.css')}}"/>
     <link href="{{asset('assets/css/dashboard.css')}}" rel="stylesheet" />
      <!-- SweetAlert 2 -->
      <script src="{{ asset( 'assets/dist/sweetalert2/sweetalert2.all.min.js')}}">

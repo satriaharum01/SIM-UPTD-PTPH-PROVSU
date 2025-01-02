@@ -22,9 +22,7 @@
                                 <th class="text-primary">Wilayah Kerja</th>
                                 <th class="text-primary">Tanaman</th>
                                 <th class="text-primary">Jenis OPT</th>
-                                <th class="text-primary">Tanggal</th>
-                                <th class="text-primary">Tingkat Kerusakan</th>
-                                <th class="text-primary">Luas Serangan</th>
+                                <th class="text-primary">Periode</th>
                                 <th class="text-primary" width="20%">Action</th>
                               </tr>
                             </thead>
@@ -74,16 +72,8 @@
             className: "text-left",
           },
           {
-            data: "tanggal_laporan",
+            data: "periode",
             className: "text-left",
-          },
-          {
-            data: "tingkat_kerusakan",
-            className: "text-left",
-          },
-          {
-            data: "luas_terserang",
-            className: "text-left", render: function(data){return data +' ha';}
           },
           {
             data: "id",
@@ -92,7 +82,8 @@
             searchable: false,
             render: function (data, type, row) {
               return (
-                  '<button type="button" class="btn btn-success btn-edit" data-id="' + data +'"><i class="fa fa-edit"></i> </button>\
+                  '<button type="button" class="btn btn-primary btn-show" data-id="' + data +'"><i class="fa fa-eye"></i> </button>\
+                  <button type="button" class="btn btn-success btn-edit" data-id="' + data +'"><i class="fa fa-edit"></i> </button>\
                   <a class="btn btn-danger btn-hapus" data-id="' + data +'" data-handler="data" href="delete/'+data +'">\
                   <i class="fa fa-trash"></i> </a> \
 				  	      <form id="delete-form-' +data +'-data" action="{{ Request::url()  }}/delete/'+data+'" method="GET" style="display: none;">\
@@ -111,6 +102,12 @@
   $("body").on("click", ".btn-edit", function () {
     var Id = $(this).attr("data-id");
     var url = "{{ route('petugas.laporan.edit', ':id') }}".replace(':id', Id);
+    window.location.href = url;
+  })
+
+  $("body").on("click", ".btn-show", function () {
+    var Id = $(this).attr("data-id");
+    var url = "{{ route('petugas.laporan.show', ':id') }}".replace(':id', Id);
     window.location.href = url;
   })
 </script>

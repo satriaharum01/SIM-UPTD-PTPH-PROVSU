@@ -17,6 +17,7 @@ use App\Models\User;
 use App\Models\Verifikasi;
 use App\Models\WilayahKerja;
 use Auth;
+use File;
 
 class Controller extends BaseController
 {
@@ -164,5 +165,12 @@ class Controller extends BaseController
         $result = Petugas::select('*')->where('kabupaten_id', Auth::user()->kabupaten_id)->count();
 
         return $result;
+    }
+
+    public function image_destroy($filename)
+    {
+        if (File::exists(public_path('/assets/images/laporan/' . $filename . ''))) {
+            File::delete(public_path('/assets/images/laporan/' . $filename . ''));
+        }
     }
 }

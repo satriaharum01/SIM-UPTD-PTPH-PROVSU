@@ -124,7 +124,7 @@ Route::prefix('kordinator')->name('kordinator.')->group(function () {
         Route::get('/json', [App\Http\Controllers\KordinatorWilayahKerjaController::class, 'json']);
         Route::get('/find/{id}', [App\Http\Controllers\KordinatorWilayahKerjaController::class, 'find']);
     });
-    
+
     Route::prefix('laporan')->name('laporan.')->group(function () {
         Route::POST('/update/{id}', [App\Http\Controllers\KordinatorLaporanController::class, 'update']);
         Route::GET('/delete/{id}', [App\Http\Controllers\KordinatorLaporanController::class, 'destroy']);
@@ -142,6 +142,7 @@ Route::prefix('petugas')->name('petugas.')->group(function () {
     Route::prefix('laporan')->name('laporan.')->group(function () {
         Route::get('/tambah', [App\Http\Controllers\PetugasLaporanController::class, 'new'])->name('new');
         Route::get('/edit/{id}', [App\Http\Controllers\PetugasLaporanController::class, 'edit'])->name('edit');
+        Route::get('/show/{id}', [App\Http\Controllers\PetugasLaporanController::class, 'show'])->name('show');
         Route::POST('/save', [App\Http\Controllers\PetugasLaporanController::class, 'store']);
         Route::POST('/update/{id}', [App\Http\Controllers\PetugasLaporanController::class, 'update']);
         Route::GET('/delete/{id}', [App\Http\Controllers\PetugasLaporanController::class, 'destroy']);
