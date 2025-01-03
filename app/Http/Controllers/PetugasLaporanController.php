@@ -36,6 +36,7 @@ class PetugasLaporanController extends Controller
         $this->data['sub_title'] = 'Tambah Data ';
         $this->data['fieldTypes'] = (new Laporan())->getField();
         $this->data['action'] = 'petugas/laporan/save';
+        $this->data['photos'] = Gallery::where('laporan_id', 0)->get();
 
         return view('petugas/laporan/detail', $this->data);
     }
@@ -48,6 +49,7 @@ class PetugasLaporanController extends Controller
         $this->data['fieldTypes'] = (new Laporan())->getField();
         $this->data['load'] = $rows;
         $this->data['action'] = 'petugas/laporan/update/'.$rows->id;
+        $this->data['photos'] = Gallery::where('laporan_id', $rows->id)->get();
 
         return view('petugas/laporan/detail', $this->data);
     }
@@ -93,6 +95,15 @@ class PetugasLaporanController extends Controller
 
         $fillAble = (new Laporan())->getFillable();
         $rows->update($request->only($fillAble));
+        Gallery::where('laporan_id', $rows->id)->delete();
+        foreach ($request->file('photos') as $photo) {
+            Gallery::create(['laporan_id' => $rows->id]);
+            $foto = Gallery::select('*')->orderby('id', 'DESC')->first();
+
+            $filename = $foto->id . '.jpg';
+            $this->image_destroy($filename);
+            $photo->storeAs('', $filename, ['disk' => 'img_upload']);
+        }
 
         return redirect($this->page);
     }
@@ -118,6 +129,7 @@ class PetugasLaporanController extends Controller
     public function destroy($id)
     {
         $rows = Laporan::findOrFail($id);
+        Gallery::where('laporan_id', $rows->id)->delete();
         $rows->delete();
 
         return redirect($this->page);

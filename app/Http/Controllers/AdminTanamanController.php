@@ -41,7 +41,7 @@ class AdminTanamanController extends Controller
         $rows = Tanaman::find($id);
         $this->data['title'] = 'Data Tanaman';
         $this->data['sub_title'] = 'Edit Data ';
-        $this->data['fieldTypes'] = (new Kecamatan())->getField();
+        $this->data['fieldTypes'] = (new Tanaman())->getField();
         $this->data['load'] = $rows;
         $this->data['action'] = 'admin/tanaman/update/'.$rows->id;
 

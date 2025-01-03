@@ -41,52 +41,65 @@
   })
   $(function () {
     //Kabupaten
-    $.ajax({
-            url: "{{ url('/find/kabupaten/'.Auth::user()->kabupaten_id)}}",
-            type: "GET",
-            cache: false,
-            dataType: 'json',
-            success: function(dataResult) {
-                console.log(dataResult);
-                var resultData = dataResult.data;
-                $.each(resultData, function(index, row) {
-                  $('#kabupaten_id').append('<option value="' + row.id + '" selected>' + row.nama_kabupaten + '</option>');
-                })
-            }
-        });
+      $.ajax({
+          url: "{{ url('/get/kabupaten/')}}",
+          type: "GET",
+          cache: false,
+          dataType: 'json',
+          success: function(dataResult) {
+              console.log(dataResult);
+              var resultData = dataResult.data;
+              $.each(resultData, function(index, row) {
+                $('#kabupaten_id').append('<option value="' + row.id + '" >' + row.nama_kabupaten + '</option>');
+              })
+          }, complete: function (xhr, status) {
+            jQuery("#compose-form select[name=kabupaten_id]").val(kabupaten_id);
+            changeKabupaten(kabupaten_id);
+          }
+      });
 
-    $.ajax({
-            url: "{{ url('/get/users/Petugas Lapangan')}}",
-            type: "GET",
-            cache: false,
-            dataType: 'json',
-            success: function(dataResult) {
-                console.log(dataResult);
-                var resultData = dataResult.data;
-                $.each(resultData, function(index, row) {  
-                  $('#user_id').append('<option value="' + row.id + '">' + row.name + ' - ' + row.email + '</option>');
-                })
-            }
-        });
+      $.ajax({
+          url: "{{ url('/get/users/Petugas Lapangan')}}",
+          type: "GET",
+          cache: false,
+          dataType: 'json',
+          success: function(dataResult) {
+              console.log(dataResult);
+              var resultData = dataResult.data;
+              $.each(resultData, function(index, row) {  
+                $('#user_id').append('<option value="' + row.id + '">' + row.name + ' - ' + row.email + '</option>');
+              })
+          }
+      });
 
-        $.ajax({
-            url: "{{ url('/get/wilayah/'.Auth::user()->kabupaten_id)}}",
-            type: "GET",
-            cache: false,
-            dataType: 'json',
-            success: function(dataResult) {
-                console.log(dataResult);
-                var resultData = dataResult.data;
-                $.each(resultData, function(index, row) {
-                  $('#wilayah_kerja_id').append('<option value="' + row.id + '">' + row.nama_daerah + '</option>');      
-                })
-            }
-        });
-
-        jQuery("#compose-form select[name=kabupaten_id]").val(kabupaten_id);
-        jQuery("#compose-form select[name=user_id]").val(user_id);
-        jQuery("#compose-form select[name=wilayah_kerja_id]").val(wilayah_kerja_id);
-  
+      jQuery("#compose-form select[name=user_id]").val(user_id);
   })
+
+  $("body").on("change load", "#kabupaten_id", function () {
+    let id = jQuery("#compose-form select[name=kabupaten_id]").val();
+    
+    changeKabupaten(id);
+    
+  })
+  function changeKabupaten(id)
+  {
+    $('#wilayah_kerja_id').children().remove().end();
+    $('#wilayah_kerja_id').append('<option value="0" selected>-- Pilih Wilayah Kerja</option>');
+    $.ajax({
+      url: "{{ url('/get/wilayah_kerja/')}}/"+id,
+      type: "GET",
+      cache: false,
+      dataType: 'json',
+      success: function(dataResult) {
+          console.log(dataResult);
+          var resultData = dataResult.data;
+          $.each(resultData, function(index, row) {
+            $('#wilayah_kerja_id').append('<option value="' + row.id + '">' + row.nama_daerah + '</option>');      
+          })
+      }, complete: function (xhr, status) {
+        jQuery("#compose-form select[name=wilayah_kerja_id]").val(wilayah_kerja_id);
+      }
+    });
+  }
 </script>
 @endsection

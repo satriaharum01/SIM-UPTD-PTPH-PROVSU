@@ -3,6 +3,7 @@
 <script src="{{asset('assets/js/popper.js')}}"></script>
 <script src="{{asset('assets/js/lightbox.min.js')}}"></script>
 <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
+<script src="{{asset('assets/js/chart.bundle.min.js')}}"></script>
 <!-- Data table plugin-->
 <script type="text/javascript" src="{{asset('assets/js/jquery.dataTables.min.js')}}"></script>
 <!-- Custom Script -->

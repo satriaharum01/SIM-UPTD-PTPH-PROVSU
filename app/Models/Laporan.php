@@ -98,4 +98,9 @@ class Laporan extends Model
             return $data;
         });
     }
+
+    public function verifikasi()
+    {
+        return $this->hasOne(Verifikasi::class, 'laporan_id');
+    }
 }

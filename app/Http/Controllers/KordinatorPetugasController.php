@@ -58,12 +58,10 @@ class KordinatorPetugasController extends Controller
     public function json()
     {
         $data = Petugas::select('*')
-                ->where('kabupaten_id',Auth::user()->kabupaten_id)
                 ->orderby('user_id', 'ASC')
                 ->get();
 
-        foreach($data as $row)
-        {
+        foreach ($data as $row) {
             $row->name = $row->cariUser->name;
             $row->wilayahKerja = $row->cariWilayahKerja->nama_daerah;
 

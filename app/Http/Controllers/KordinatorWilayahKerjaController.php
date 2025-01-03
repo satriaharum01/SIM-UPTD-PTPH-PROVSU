@@ -51,7 +51,7 @@ class KordinatorWilayahKerjaController extends Controller
     }
     public function json()
     {
-        $kecamatan = Kecamatan::select('id')->where('kabupaten_id',Auth::user()->kabupaten_id)->get()->toArray();
+        $kecamatan = Kecamatan::select('id')->get()->toArray();
         $data = WilayahKerja::select('*')
                 ->whereIn('kecamatan_id',$kecamatan)
                 ->get();

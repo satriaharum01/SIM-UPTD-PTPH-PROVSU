@@ -18,9 +18,13 @@ class Verifikasi extends Model
         'catatan' => 'text',
         'tanggal_verifikasi' => 'date'
     ];
-    
+
     public function getField()
     {
         return $this->inputType;
+    }
+    public function verifikator()
+    {
+        return $this->belongsTo(User::class, 'verifikator_id');
     }
 }

@@ -18,13 +18,14 @@
                             <thead>
                               <tr>
                                 <th width="10%"></th>
-                                <th class="text-primary">Kecamatan</th>
+                                <th class="text-primary">Petugas</th>
                                 <th class="text-primary">Wilayah Kerja</th>
                                 <th class="text-primary">Tanaman</th>
-                                <th class="text-primary">Jenis OPT</th>
-                                <th class="text-primary">Tanggal</th>
-                                <th class="text-primary">Tingkat Kerusakan</th>
-                                <th class="text-primary">Luas Serangan</th>
+                                <th class="text-primary">OPT</th>
+                                <th class="text-primary">Periode</th>
+                                <th class="text-primary">Luas Terserang</th>
+                                <th class="text-primary">status</th>
+                                <th class="text-primary" width="20%">Action</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -43,9 +44,11 @@
         </div>
     </div>
 </div>
+@include('models.verify')
 @endsection
 @section('js')
 <script>
+  let icon = 'check';
   $(function () {
       table = $("#data-width").DataTable({
         searching: true,
@@ -57,7 +60,7 @@
             className: "text-center",
           },
           {
-            data: "nama_kecamatan",
+            data: "nama_petugas",
             className: "text-left",
           },
           {
@@ -73,20 +76,81 @@
             className: "text-left",
           },
           {
-            data: "tanggal_laporan",
-            className: "text-left",
-          },
-          {
-            data: "tingkat_kerusakan",
+            data: "periode",
             className: "text-left",
           },
           {
             data: "luas_terserang",
             className: "text-left", render: function(data){return data +' ha';}
           },
+          {
+            data: "status",
+            className: "text-center",
+            render: function(data){
+              if(data == 'Menunggu'){ icon = 'check';}else{icon = 'edit';}
+              return data;
+            }
+          },
+          {
+            data: "id",
+            className: "text-center",
+            render: function (data, type, row) {
+              return '<button type="button" class="btn btn-primary btn-show" data-id="' + data +'"><i class="fa fa-eye"></i> </button>\
+                  <button type="button" class="btn btn-success btn-'+icon+'" data-id="' + data +'"><i class="fa fa-'+icon+'"></i> </button>';
+            },
+          },
         ],
       });
-    });
+  });
     
+</script>
+<script>
+  
+  $("body").on("click", ".btn-show", function () {
+    var Id = $(this).attr("data-id");
+    var url = "{{ route('kordinator.laporan.show', ':id') }}".replace(':id', Id);
+    window.location.href = url;
+  })
+
+  $("body").on("click", ".btn-edit", function () {
+    var Id = $(this).attr("data-id");
+    
+    find_data(Id);
+    jQuery("#verifyForm").attr("action", "{{ url ($page) }}/verifikasi/"+Id);
+    jQuery("#verifyModal").modal("toggle");
+  })
+  $("body").on("click", ".btn-check", function () {
+    var Id = $(this).attr("data-id");
+    
+    jQuery("#verifyForm input[name=laporan_id]").val(Id);
+    kosongkan();
+    jQuery("#verifyForm").attr("action", "{{ url ($page) }}/verifikasi/"+Id);
+    jQuery("#verifyModal").modal("toggle");
+  })
+  
+  function kosongkan() {
+    jQuery("#verifyForm textarea[name=catatan]").val("");
+    jQuery("#verifyForm select[name=status]").val("menunggu");
+  }
+
+  function find_data(id){
+      $.ajax({
+          url: '{{ url("$page") }}/find/'+id,
+          type: "GET",
+          cache: false,
+          dataType: 'json',
+          success: function (dataResult) { 
+              console.log(dataResult);
+              set_value(dataResult);
+              console.log('Edit Data :', dataResult);
+          }
+      });
+  }
+  
+  function set_value(value) {
+    jQuery("#verifyForm input[name=laporan_id]").val(value.laporan_id);
+    jQuery("#verifyForm textarea[name=catatan]").val(value.catatan);
+    jQuery("#verifyForm select[name=status]").val(value.status);
+  }
 </script>
 @endsection

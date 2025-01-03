@@ -10,7 +10,7 @@
                   <div class="card-header">
                     <h3 class="card-title">{{$sub_title}}</h3>
                   </div>
-                  <form class="" method="POST" enctype="multipart/form-data" action="{{url($action)}}">
+                  <form id="compose-form" class="" method="POST" enctype="multipart/form-data" action="{{url($action)}}">
                     @csrf
                     <div class="card-body row">
                           @foreach ($fieldTypes as $field => $type)
@@ -44,7 +44,7 @@
 $(function () {
     //Kecamatan
     $.ajax({
-            url: "{{ url('/find/kecamatan/'.Auth::user()->kabupaten_id)}}",
+            url: "{{ url('/get/kecamatan/')}}",
             type: "GET",
             cache: false,
             dataType: 'json',
@@ -54,10 +54,12 @@ $(function () {
                 $.each(resultData, function(index, row) {
                   $('#kecamatan_id').append('<option value="' + row.id + '">' + row.nama_kecamatan + '</option>');
                 })
+            },complete: function (xhr, status) 
+            {
+              jQuery("#compose-form select[name=kecamatan_id]").val(kecamatan_id);
             }
         });
 
-        jQuery("#compose-form select[name=kecamatan_id]").val(kecamatan_id);
   
   })
 </script>

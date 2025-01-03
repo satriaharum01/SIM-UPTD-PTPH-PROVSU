@@ -35,7 +35,7 @@
   var kabupaten_id = {{$load->kabupaten_id ?? 0}};
   
   $("body").on("click", ".btn-back", function () {
-    window.location.href = "{{route('kordinator.kecamatan')}}";
+    window.location.href = "{{route('admin.tanaman')}}";
   })
 
 </script>

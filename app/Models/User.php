@@ -25,6 +25,7 @@ class User extends Authenticatable
         'level',
         'password',
         'last_login',
+        'faces',
     ];
     protected $inputType = [
         'name' => 'text',

@@ -50,10 +50,13 @@ class KordinatorKecamatanController extends Controller
     public function json()
     {
         $data = Kecamatan::select('*')
-                ->where('kabupaten_id',Auth::user()->kabupaten_id)
+                ->orderby('kabupaten_id', 'ASC')
                 ->orderby('nama_kecamatan', 'ASC')
                 ->get();
-
+        foreach($data as $row)
+        {
+            $row->kabupaten = $row->cariKabupaten->nama_kabupaten;
+        }
         return Datatables::of($data)
             ->addIndexColumn()
             ->make(true);

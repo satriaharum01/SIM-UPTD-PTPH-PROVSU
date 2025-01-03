@@ -58,7 +58,20 @@
                           <label class="form-label">Pilih Foto</label>
                           <input type="file" name="photos[]" id="photos" multiple required onchange="previewImages()">
                           <button type="button" onclick="resetForm()" class="btn btn-danger btn-reset" hidden><i class="fa fa-refresh"></i></button>
-                          <div id="preview" style="display: flex; gap: 10px; flex-wrap: wrap;"></div>
+                          <div id="preview" style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        
+                          @if(count($photos) > 1)
+                            @foreach($photos as $photo)
+                                <div class="photo">
+                                    <a href="{{ asset('assets/images/laporan/'.$photo->id.'.jpg') }}" data-lightbox="gallery">
+                                      <img src="{{ asset('assets/images/laporan/'.$photo->id.'.jpg') }}"  alt="Foto" style="width: 100px; height: auto; margin: 5px;">
+                                    </a>
+                                </div>
+                            @endforeach
+                          @else
+                          <h4>Tidak Ada Data !</h4>
+                          @endif
+                        </div>
                         </div>
                     </div>
                     <div class="card-footer">
@@ -125,6 +138,10 @@
   
 $(function () {
   
+  @if(count($photos) > 1)
+  
+  $('.btn-reset').prop('hidden',false);
+  @endif
     //Petugas
     $.ajax({
         url: "{{ url('/find/petugas/'.Auth::user()->id)}}",
