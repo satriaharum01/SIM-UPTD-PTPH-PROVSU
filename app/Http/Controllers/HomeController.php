@@ -80,13 +80,6 @@ class HomeController extends Controller
                 ->orderby('nama_kecamatan', 'DESC')
                 ->get();
 
-        foreach ($data as $row) {
-            $row->waktu = date('d F Y', strtotime($row->appointment_date)) .' '. date('h:i A', strtotime($row->appointment_time));
-            $row->kode = date('Ymd', strtotime($row->appointment_date)).'APPR'.$row->id;
-            $row->dokter = $row->cari_dokter->name;
-            $row->pasien = $row->cari_pasien->name;
-        }
-
         return Datatables::of($data)
             ->addIndexColumn()
             ->make(true);

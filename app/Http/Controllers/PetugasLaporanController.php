@@ -8,6 +8,7 @@ use App\Models\Petugas;
 use App\Models\Laporan;
 use App\Models\Gallery;
 use App\Models\User;
+use App\Models\Verifikasi;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\helpers\Formula;
 use Auth;
@@ -36,6 +37,7 @@ class PetugasLaporanController extends Controller
         $this->data['sub_title'] = 'Tambah Data ';
         $this->data['fieldTypes'] = (new Laporan())->getField();
         $this->data['action'] = 'petugas/laporan/save';
+        $this->data['photos'] = Gallery::where('laporan_id', 0)->get();
 
         return view('petugas/laporan/detail', $this->data);
     }
@@ -48,6 +50,7 @@ class PetugasLaporanController extends Controller
         $this->data['fieldTypes'] = (new Laporan())->getField();
         $this->data['load'] = $rows;
         $this->data['action'] = 'petugas/laporan/update/'.$rows->id;
+        $this->data['photos'] = Gallery::where('laporan_id', $rows->id)->get();
 
         return view('petugas/laporan/detail', $this->data);
     }
@@ -67,12 +70,16 @@ class PetugasLaporanController extends Controller
     public function json()
     {
         $petugas_id = Petugas::where('user_id', Auth::user()->id)->first();
-        $data = Laporan::select('*')
+        $data = Laporan::with('verifikasi:id,laporan_id,status')
+                ->select('*')
                 ->where('petugas_id', $petugas_id->id)
                 ->orderby('bulan_tahun', 'DESC')
                 ->get();
 
         foreach ($data as $row) {
+
+            $row->verificationId = $row->verifikasi->id ?? null;
+            $row->status = $row->verifikasi->status ?? null;
             $row->nama_kecamatan = $row->cariWilayahKerja->cariKecamatan->nama_kecamatan;
             $row->wilayah_kerja = $row->cariWilayahKerja->nama_daerah;
             $row->jenis_opt = $row->cariOPT->nama_opt;
@@ -93,6 +100,17 @@ class PetugasLaporanController extends Controller
 
         $fillAble = (new Laporan())->getFillable();
         $rows->update($request->only($fillAble));
+        if ($request->file('photos')) {
+            Gallery::where('laporan_id', $rows->id)->delete();
+            foreach ($request->file('photos') as $photo) {
+                Gallery::create(['laporan_id' => $rows->id]);
+                $foto = Gallery::select('*')->orderby('id', 'DESC')->first();
+
+                $filename = $foto->id . '.jpg';
+                $this->image_destroy($filename);
+                $photo->storeAs('', $filename, ['disk' => 'img_upload']);
+            }
+        }
 
         return redirect($this->page);
     }
@@ -115,9 +133,20 @@ class PetugasLaporanController extends Controller
         return redirect($this->page)->with('success', 'Laporan berhasil dibuat!');
     }
 
+    public function verifikasi(Request $request,$id)
+    {
+        $data = Verifikasi::select('*')->where('laporan_id', $id)->first();
+        if(!empty($data))
+        {
+            $data->verifikator_name = $data->verifikator->name;
+        }
+        return json_encode($data);
+    }
+    
     public function destroy($id)
     {
         $rows = Laporan::findOrFail($id);
+        Gallery::where('laporan_id', $rows->id)->delete();
         $rows->delete();
 
         return redirect($this->page);

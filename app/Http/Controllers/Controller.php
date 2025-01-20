@@ -18,6 +18,7 @@ use App\Models\Verifikasi;
 use App\Models\WilayahKerja;
 use Auth;
 use File;
+use DB;
 
 class Controller extends BaseController
 {
@@ -52,7 +53,7 @@ class Controller extends BaseController
 
     public function count_laporan_kordinator()
     {
-        $kecamatan = Kecamatan::select('id')->where('kabupaten_id', Auth::user()->kabupaten_id)->get()->toArray();
+        $kecamatan = Kecamatan::select('id')->get()->toArray();
         $wilayahKerja = WilayahKerja::select('id')
                 ->whereIn('kecamatan_id', $kecamatan)
                 ->get()->toArray();
@@ -74,18 +75,18 @@ class Controller extends BaseController
         switch (Auth::user()->level) {
             case 'Admin Provinsi':
                 $verify = Verifikasi::select('laporan_id')->where('verifikator_id', Auth::user()->id)->get()->toArray();
-                $result = Laporan::select('*')->whereNotIn('laporan_id', $verify)->count();
+                $result = Laporan::select('*')->whereNotIn('id', $verify)->count();
                 break;
             case 'Kordinator Kabupaten':
-                $kecamatan = Kecamatan::select('id')->where('kabupaten_id', Auth::user()->kabupaten_id)->get()->toArray();
+                $kecamatan = Kecamatan::select('id')->get()->toArray();
                 $wilayahKerja = WilayahKerja::select('id')->whereIn('kecamatan_id', $kecamatan)->get()->toArray();
                 $verify = Verifikasi::select('laporan_id')->where('verifikator_id', Auth::user()->id)->get()->toArray();
-                $result = Laporan::select('*')->where('wilayah_kerja_id', $wilayahKerja)->whereNotIn('laporan_id', $verify)->count();
+                $result = Laporan::select('*')->whereIn('wilayah_kerja_id', $wilayahKerja)->whereNotIn('id', $verify)->count();
                 break;
             case 'Petugas Lapangan':
                 $petugas = Petugas::select('*')->where('user_id', Auth::user()->id)->first();
                 $verify = Verifikasi::select('laporan_id')->get()->toArray();
-                $result = Laporan::select('*')->where('petugas_id', $petugas->id)->whereNotIn('laporan_id', $verify)->count();
+                $result = Laporan::select('*')->where('petugas_id', $petugas->id)->whereNotIn('id', $verify)->count();
                 break;
         }
         return $result;
@@ -94,11 +95,18 @@ class Controller extends BaseController
     public function count_laporan_verifikasi()
     {
         $verify = Verifikasi::select('laporan_id')->where('verifikator_id', Auth::user()->id)->get()->toArray();
-        $result = Laporan::select('*')->whereIn('laporan_id', $verify)->count();
+        $result = Laporan::select('*')->whereIn('id', $verify)->count();
 
         return $result;
     }
 
+    public function count_laporan_verifikasi_petugas()
+    {
+        $verify = Verifikasi::select('laporan_id')->get()->toArray();
+        $result = Laporan::select('*')->whereIn('id', $verify)->count();
+
+        return $result;
+    }
     public function count_kabupaten()
     {
         return Kabupaten::select('*')->count();
@@ -111,7 +119,7 @@ class Controller extends BaseController
 
     public function count_kecamatan_kordinator()
     {
-        $result = Kecamatan::select('*')->where('kabupaten_id', Auth::user()->kabupaten_id)->count();
+        $result = Kecamatan::select('*')->count();
 
         return $result;
     }
@@ -123,7 +131,7 @@ class Controller extends BaseController
 
     public function count_wilayahKerja_kordinator()
     {
-        $kecamatan = Kecamatan::select('id')->where('kabupaten_id', Auth::user()->kabupaten_id)->get()->toArray();
+        $kecamatan = Kecamatan::select('id')->get()->toArray();
         $result = WilayahKerja::select('*')->whereIn('kecamatan_id', $kecamatan)->count();
 
         return $result;
@@ -162,7 +170,25 @@ class Controller extends BaseController
 
     public function count_petugas_kordinator()
     {
-        $result = Petugas::select('*')->where('kabupaten_id', Auth::user()->kabupaten_id)->count();
+        $result = Petugas::select('*')->count();
+
+        return $result;
+    }
+
+    public function sum_luas_pengendalian()
+    {
+        $verify = Verifikasi::select('laporan_id')->pluck('laporan_id')->toArray();
+        $result = Laporan::whereIn('id', $verify)
+        ->sum(DB::raw('r_serang + s_serang + b_serang + p_serang + pemusnahan + pestisida + AH + cara_lain'));
+
+        return $result;
+    }
+    public function sum_luas_terserang()
+    {
+        $verify = Verifikasi::select('laporan_id')->pluck('laporan_id')->toArray();
+
+        $result = Laporan::whereIn('id', $verify)
+            ->sum(DB::raw('r_serang + s_serang + b_serang + p_serang'));
 
         return $result;
     }
@@ -171,6 +197,12 @@ class Controller extends BaseController
     {
         if (File::exists(public_path('/assets/images/laporan/' . $filename . ''))) {
             File::delete(public_path('/assets/images/laporan/' . $filename . ''));
+        }
+    }
+    public function profile_destroy($filename)
+    {
+        if (File::exists(public_path('/assets/img/faces/' . $filename . ''))) {
+            File::delete(public_path('/assets/img/faces/' . $filename . ''));
         }
     }
 }

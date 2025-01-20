@@ -14,23 +14,27 @@
                   </div>
                   <div class="card-body " id="card-main">
                       <div class="table-responsive">
-                        <table class="table table-hover" id="data-width" width="100%">
-                            <thead>
-                              <tr>
-                                <th width="10%"></th>
-                                <th class="text-primary">Kecamatan</th>
-                                <th class="text-primary">Wilayah Kerja</th>
-                                <th class="text-primary">Tanaman</th>
-                                <th class="text-primary">Jenis OPT</th>
-                                <th class="text-primary">Tanggal</th>
-                                <th class="text-primary">Tingkat Kerusakan</th>
-                                <th class="text-primary">Luas Serangan</th>
-                              </tr>
-                            </thead>
-                            <tbody>
+                          <table class="table table-hover" id="data-width" width="100%">
+                              <thead>
+                                <tr>
+                                  <th class="text-primary text-center align-content-around" rowspan="2">Kabupaten</th>
+                                  <th class="text-primary text-center align-content-around" rowspan="2">Komoditas</th>
+                                  <th class="text-primary text-center align-content-around" rowspan="2">Periode</th>
+                                  <th class="text-primary text-center align-content-around" rowspan="2">OPT</th>
+                                  <th class="text-primary text-center" colspan="5">Luas Terserang</th>
+                                </tr>
+                                <tr>
+                                  <th class="text-primary">R</th>
+                                  <th class="text-primary">S</th>
+                                  <th class="text-primary">B</th>
+                                  <th class="text-primary">P</th>
+                                  <th class="text-primary">J</th>
+                                </tr>
+                              </thead>
+                              <tbody>
 
-                            </tbody>
-                        </table>
+                              </tbody>
+                          </table>
                       </div>
                   </div>
                   <div class="card-footer d-flex justify-content-between">
@@ -47,42 +51,49 @@
 @section('js')
 <script>
   $(function () {
-      table = $("#data-width").DataTable({
-        searching: true,
+    table = $("#data-width").DataTable({
+        searching: false,
+        paging: false,
+        lengthChange: false,
+        info: false,
+        ordering: false,
         ajax: '{{Request::url() }}/json',
         columns: [
           {
-            data: "DT_RowIndex",
-            name: "DT_RowIndex",
+            data: "nama_kabupaten",
             className: "text-center",
           },
           {
-            data: "nama_kecamatan",
-            className: "text-left",
-          },
-          {
-            data: "wilayah_kerja",
-            className: "text-left",
-          },
-          {
             data: "tanaman",
-            className: "text-left",
+            className: "text-center",
+          },
+          {
+            data: "periode",
+            className: "text-center",
           },
           {
             data: "jenis_opt",
-            className: "text-left",
+            className: "text-center",
           },
           {
-            data: "tanggal_laporan",
-            className: "text-left",
+            data: "r_serang",
+            className: "text-center", render: function(data){return data +' ha';}
           },
           {
-            data: "tingkat_kerusakan",
-            className: "text-left",
+            data: "s_serang",
+            className: "text-center", render: function(data){return data +' ha';}
           },
           {
-            data: "luas_terserang",
-            className: "text-left", render: function(data){return data +' ha';}
+            data: "b_serang",
+            className: "text-center", render: function(data){return data +' ha';}
+          },
+          {
+            data: "p_serang",
+            className: "text-center", render: function(data){return data +' ha';}
+          },
+          {
+            data: "j_serang",
+            className: "text-center", render: function(data){return data +' ha';}
           },
         ],
       });

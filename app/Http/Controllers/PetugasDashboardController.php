@@ -17,7 +17,7 @@ class PetugasDashboardController extends Controller
         $this->data['title'] = 'Dashboard Petugas Lapangan';
         $this->data['laporan'] = $this->count_laporan_petugas();
         $this->data['laporan_menunggu'] = $this->count_laporan_menunggu();
-        $this->data['laporan_verifikasi'] = $this->count_laporan_verifikasi();
+        $this->data['laporan_verifikasi'] = $this->count_laporan_verifikasi_petugas();
         $this->data['wilayahKerja'] = $this->get_wilayahKerja_petugas();
 
         return view('petugas/dashboard/index', $this->data);

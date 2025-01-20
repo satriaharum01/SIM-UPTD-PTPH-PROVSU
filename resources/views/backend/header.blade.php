@@ -19,12 +19,25 @@
                     </span>
                   </a>
                   <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                    <a class="dropdown-item" href="#">
+                    <a class="dropdown-item" 
+                    @if(Auth::user()->level == 'Admin Provinsi')
+                      href="{{route('admin.profile')}}"
+                    
+                  @elseif(Auth::user()->level == 'Kordinator Kabupaten')
+                  
+                  href="{{route('kordinator.profile')}}"
+                  @else
+
+                  href="{{route('petugas.profile')}}"
+                  @endif
+                  >
                       <i class="dropdown-icon fe fe-user"></i> Profile
                     </a>
+                    <!--
                     <a class="dropdown-item" href="#">
                       <i class="dropdown-icon fe fe-settings"></i> Log
                     </a>
+-->
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
                       <i class="dropdown-icon fe fe-log-out"></i> Sign out
@@ -46,6 +59,9 @@
                   @if(Auth::user()->level == 'Admin Provinsi')
                   <li class="nav-item">
                     <a href="{{route('admin.dashboard')}}" class="nav-link {{ (request()->is('admin/dashboard')) ? 'active' : '' }}"><i class="fe fe-home"></i> Home</a>
+                  </li>
+                  <li class="nav-item dropdown">
+                    <a href="{{route('admin.pengguna')}}" class="nav-link {{ (request()->is('admin/pengguna')) ? 'active' : '' }} {{ (request()->is('admin/pengguna/*')) ? 'active' : '' }}"><i class="fe fe-users"></i> Pengguna</a>
                   </li>
                   <li class="nav-item dropdown">
                     <a href="{{route('admin.kabupaten')}}" class="nav-link {{ (request()->is('admin/kabupaten')) ? 'active' : '' }} {{ (request()->is('admin/kabupaten/*')) ? 'active' : '' }}"><i class="fe fe-grid"></i> Kabupaten</a>

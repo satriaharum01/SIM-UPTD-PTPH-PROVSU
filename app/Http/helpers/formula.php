@@ -4,8 +4,16 @@ namespace App\Http\helpers;
 
 class Formula
 {
+    public static $chartColor = [
+        'red', 'green','blue','yellow','cyan'
+    ];
+    
     public static $tingkatKerusakan = [
         'ringan','sedang','berat','puso'
+    ];
+
+    public static $level = [
+        'Admin Provinsi','Kordinator Kabupaten','Petugas Lapangan'
     ];
 
     public static $periode = [

@@ -3,10 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-//Use Models
+use App\Models\Gallery;
+use App\Models\Kabupaten;
+use App\Models\Kecamatan;
+use App\Models\WilayahKerja;
 use App\Models\Laporan;
+use App\Models\Tanaman;
+use App\Models\Verifikasi;
 use App\Models\User;
 use Yajra\DataTables\Facades\DataTables;
+use App\Http\helpers\Formula;
 use Auth;
 
 class AdminLaporanController extends Controller
@@ -29,19 +35,58 @@ class AdminLaporanController extends Controller
 
     public function json()
     {
-        $data = Laporan::select('*')
-                ->orderby('tanggal_laporan', 'DESC')
-                ->get();
+        $rekaptulasi = []; // Inisialisasi array kosong
 
+        // Ambil data laporan dan join dengan relasi yang dibutuhkan
+        $data = Laporan::whereHas('verifikasi', function ($query) {
+            $query->where('status', 'diterima');
+        })->with([
+            'cariWilayahKerja.cariKecamatan.cariKabupaten',
+            'cariOPT',
+            'cariTanaman'
+        ])
+            ->orderBy('wilayah_kerja_id', 'ASC')
+            ->orderBy('tanaman_id', 'ASC')
+            ->orderBy('opt_id', 'ASC')
+            ->orderBy('bulan_tahun', 'DESC')
+            ->get();
+
+        // Proses data
         foreach ($data as $row) {
-            $row->nama_kecamatan = $row->cariWilayahKerja->cariKecamatan->nama_kecamatan;
-            $row->wilayah_kerja = $row->cariWilayahKerja->nama_daerah;
+            // Tambahkan informasi tambahan
+            $row->nama_kabupaten = $row->cariWilayahKerja->cariKecamatan->cariKabupaten->nama_kabupaten;
             $row->jenis_opt = $row->cariOPT->nama_opt;
             $row->tanaman = $row->cariTanaman->nama_tanaman;
-            $row->tanggal_laporan = date('d F Y', strtotime($row->tanggal_laporan));
+            $row->periode = Formula::$periode[$row->periode] . ' ' . date('F Y', strtotime($row->bulan_tahun));
+
+            // Cari apakah data dengan kriteria yang sama sudah ada
+            $key = collect($rekaptulasi)->search(function ($item) use ($row) {
+                return $item->nama_kabupaten == $row->nama_kabupaten &&
+                       $item->opt_id == $row->opt_id &&
+                       $item->periode == $row->periode;
+            });
+
+            // Gabungkan data jika sudah ada
+            if ($key !== false) {
+                $rekaptulasi[$key]->r_serang += $row->r_serang;
+                $rekaptulasi[$key]->s_serang += $row->s_serang;
+                $rekaptulasi[$key]->b_serang += $row->b_serang;
+                $rekaptulasi[$key]->p_serang += $row->p_serang;
+            } else {
+                // Tambahkan data baru
+                $rekaptulasi[] = $row;
+            }
         }
 
-        return Datatables::of($data)
+        // Format data jumlah menjadi 2 desimal
+        foreach ($rekaptulasi as &$item) {
+            $item->r_serang = number_format($item->r_serang, 2);
+            $item->s_serang = number_format($item->s_serang, 2);
+            $item->b_serang = number_format($item->b_serang, 2);
+            $item->p_serang = number_format($item->p_serang, 2);
+            $item->j_serang = number_format($item->r_serang + $item->s_serang + $item->b_serang + $item->p_serang, 2);
+        }
+        return Datatables::of($rekaptulasi)
             ->addIndexColumn()
             ->make(true);
     }

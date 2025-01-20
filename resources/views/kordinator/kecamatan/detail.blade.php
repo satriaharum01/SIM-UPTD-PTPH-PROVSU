@@ -10,7 +10,7 @@
                   <div class="card-header">
                     <h3 class="card-title">{{$sub_title}}</h3>
                   </div>
-                  <form class="" method="POST" enctype="multipart/form-data" action="{{url($action)}}">
+                  <form class="" method="POST" enctype="multipart/form-data" id="compose-form" action="{{url($action)}}">
                     @csrf
                     <div class="card-body row">
                           @foreach ($fieldTypes as $field => $type)
@@ -37,13 +37,12 @@
   $("body").on("click", ".btn-back", function () {
     window.location.href = "{{route('kordinator.kecamatan')}}";
   })
-
 </script>
 <script>
   $(function () {
     //Kabupaten
     $.ajax({
-       url: "{{ url('/find/kabupaten/'.Auth::user()->kabupaten_id)}}",
+       url: "{{ url('/get/kabupaten/')}}",
        type: "GET",
        cache: false,
        dataType: 'json',
@@ -51,10 +50,12 @@
            console.log(dataResult);
            var resultData = dataResult.data;
            $.each(resultData, function(index, row) {
-             $('#kabupaten_id').append('<option value="' + row.id + '" selected>' + row.nama_kabupaten + '</option>');
+             $('#kabupaten_id').append('<option value="' + row.id + '">' + row.nama_kabupaten + '</option>');
            })
+       }, complete: function (xhr, status) {
+          jQuery("#compose-form select[name=kabupaten_id]").val(kabupaten_id);
        }
-      });
-    })
+    });
+  })
 </script>
 @endsection

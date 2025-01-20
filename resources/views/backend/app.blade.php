@@ -45,6 +45,7 @@
               </div>
           </div>
       </div>
+      @yield('modal')
       @include('backend.footer')
       @include('backend.js')
       @yield('js')

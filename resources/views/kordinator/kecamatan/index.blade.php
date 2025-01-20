@@ -18,7 +18,8 @@
                             <thead>
                               <tr>
                                 <th width="10%"></th>
-                                <th class="text-primary" width="50%">Nama Kecamatan</th>
+                                <th class="text-primary">Kabupaten</th>
+                                <th class="text-primary">Nama Kecamatan</th>
                                 <th class="text-primary">Action</th>
                               </tr>
                             </thead>
@@ -50,6 +51,10 @@
             data: "DT_RowIndex",
             name: "DT_RowIndex",
             className: "text-center",
+          },
+          {
+            data: "kabupaten",
+            className: "text-left",
           },
           {
             data: "nama_kecamatan",
