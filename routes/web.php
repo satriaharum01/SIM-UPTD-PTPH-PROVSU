@@ -179,6 +179,7 @@ Route::prefix('petugas')->name('petugas.')->group(function () {
     });
 
     Route::prefix('laporan')->name('laporan.')->group(function () {
+        Route::GET('/filter', [App\Http\Controllers\PetugasLaporanController::class, 'filterData']);
         Route::GET('/tambah', [App\Http\Controllers\PetugasLaporanController::class, 'new'])->name('new');
         Route::GET('/edit/{id}', [App\Http\Controllers\PetugasLaporanController::class, 'edit'])->name('edit');
         Route::GET('/show/{id}', [App\Http\Controllers\PetugasLaporanController::class, 'show'])->name('show');

@@ -92,6 +92,37 @@ class PetugasLaporanController extends Controller
             ->make(true);
     }
 
+    public function filterData(Request $request)
+    {
+        $petugas_id = Petugas::where('user_id', Auth::user()->id)->first();
+        $data = Laporan::with('verifikasi:id,laporan_id,status')
+                ->select('*')
+                ->where('petugas_id', $petugas_id->id)
+                ->when($request->opt_id, fn ($query, $opt) => $query->where('opt_id', $opt))
+                ->when($request->tanaman_id, fn ($query, $tanaman) => $query->where('tanaman_id', $tanaman))
+                ->when(isset($request->periode), fn ($query) => $query->where('periode', $request->periode))
+                // Fix di sini
+                //->when($request->periode, fn ($query, $periode) => $query->where('periode', $periode))
+                ->when($request->status, function ($query, $status) {
+                    $query->whereHas('verifikasi', fn ($q) => $q->where('status', $status));
+                })
+                ->get();
+
+        foreach ($data as $row) {
+
+            $row->verificationId = $row->verifikasi->id ?? null;
+            $row->status = $row->verifikasi->status ?? null;
+            $row->nama_kecamatan = $row->cariWilayahKerja->cariKecamatan->nama_kecamatan;
+            $row->wilayah_kerja = $row->cariWilayahKerja->nama_daerah;
+            $row->jenis_opt = $row->cariOPT->nama_opt;
+            $row->tanaman = $row->cariTanaman->nama_tanaman;
+            $row->periode = Formula::$periode[$row->periode] . ' '.date('F Y', strtotime($row->bulan_tahun));
+        }
+
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->make(true);
+    }
     //CRUD
 
     public function update(Request $request, $id)
@@ -133,16 +164,15 @@ class PetugasLaporanController extends Controller
         return redirect($this->page)->with('success', 'Laporan berhasil dibuat!');
     }
 
-    public function verifikasi(Request $request,$id)
+    public function verifikasi(Request $request, $id)
     {
         $data = Verifikasi::select('*')->where('laporan_id', $id)->first();
-        if(!empty($data))
-        {
+        if (!empty($data)) {
             $data->verifikator_name = $data->verifikator->name;
         }
         return json_encode($data);
     }
-    
+
     public function destroy($id)
     {
         $rows = Laporan::findOrFail($id);

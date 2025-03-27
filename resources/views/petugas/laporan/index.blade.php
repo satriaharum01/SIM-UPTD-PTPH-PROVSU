@@ -1,5 +1,11 @@
 @extends('backend.app')
 @section('content')
+
+<?php
+use App\Http\helpers\Formula;
+
+?>
+
 <div class="my-3 my-md-5">
     <div class="container">
         <div class="row">
@@ -9,6 +15,7 @@
                   <div class="card-header">
                     <h3 class="card-title">{{$sub_title}}</h3>
                     <div class="card-options align-items-center">
+                      <button class="btn btn-success btn-filter mx-2"  data-target="#filterModal" data-toggle="modal"><i class="fa fa-filter"></i> Filter</button>
                       <button class="btn btn-primary btn-add"><i class="fa fa-plus"></i> Tambah Data</button>
                     </div>
                   </div>
@@ -72,7 +79,8 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Status</label>
-                    <select readonly class="form-control" name="status" id="status">
+                    <select class="form-control" name="status" id="status">
+                        <option value="">Semua Status</option>
                         <option value="menunggu">Menunggu</option>
                         <option value="diterima">Diterima</option>
                         <option value="ditolak">Ditolak</option>
@@ -84,6 +92,58 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="reset" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header flex-row">
+                <h5 class="modal-title card-body p-0 text-center" id="exampleModalLabel">Cari Data</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    
+                </button>
+            </div>
+            
+            <form action="" method="post" id="filterForm">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Jenis OPT</label>
+                    <select value="0" class="form-control" name="opt_id" id="opt_id">
+                        <option value="0">Semua OPT</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Tanaman</label>
+                    <select value="0" class="form-control" name="tanaman_id" id="tanaman_id">
+                        <option value="0">Semua Tanaman</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Periode</label>
+                    <select value="0" class="form-control" name="periode" id="periode">
+                      <option value="">Semua Periode</option>
+                      @foreach(Formula::$periode as $row => $val)
+                          <option value="{{$row}}">{{ucfirst($val)}}</option>
+                      @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select class="form-control" name="status" id="status">
+                        <option value="">Semua Status</option>
+                        <option value="menunggu">Menunggu</option>
+                        <option value="diterima">Diterima</option>
+                        <option value="ditolak">Ditolak</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-terapkan btn-primary" data-dismiss="modal">Terapkan</button>
                 <button type="reset" class="btn btn-danger" data-dismiss="modal">Close</button>
             </div>
             </form>
@@ -104,10 +164,51 @@
 }
 
   $(function () {
+    
+    //OPT
+    $.ajax({
+        url: "{{ url('/get/opt/')}}",
+        type: "GET",
+        cache: false,
+        dataType: 'json',
+        success: function(dataResult) {
+            console.log(dataResult);
+            var resultData = dataResult.data;
+            $.each(resultData, function(index, row) {
+              if(opt_id === row.id)
+              {
+                $('#opt_id').append('<option value="' + row.id + '" selected>' + row.nama_opt + '</option>');
+              }else{
+                $('#opt_id').append('<option value="' + row.id + '">' + row.nama_opt + '</option>');
+              }
+            })
+        }
+    });
+
+    //Tanaman
+    $.ajax({
+        url: "{{ url('/get/tanaman/')}}",
+        type: "GET",
+        cache: false,
+        dataType: 'json',
+        success: function(dataResult) {
+            console.log(dataResult);
+            var resultData = dataResult.data;
+            $.each(resultData, function(index, row) {
+              $('#tanaman_id').append('<option value="' + row.id + '">' + row.nama_tanaman + '</option>');
+            })
+        }
+    });
+
       table = $("#data-width").DataTable({
         searching: true,
         ajax: '{{Request::url() }}/json',
         columns: [
+          {
+            data: "DT_RowIndex",
+            name: "DT_RowIndex",
+            className: "text-center",
+          },
           {
             data: null, 
             name: 'status',
@@ -119,11 +220,6 @@
                 return `<button class="btn ${buttonClass} btn-eye" data-id="${verificationId}">${status.toUpperCase()}</button>`;
             },
         },
-          {
-            data: "DT_RowIndex",
-            name: "DT_RowIndex",
-            className: "text-center",
-          },
           {
             data: "nama_kecamatan",
             className: "text-left",
@@ -168,6 +264,11 @@
     window.location.href = "{{route('petugas.laporan.new')}}";
   })
 
+  $("body").on("click", ".btn-terapkan", function () {
+    let formData = $("#filterForm").serialize();
+    let url = `{{ Request::url() }}/filter?${formData}`;
+    table.ajax.url(url).load();
+  })
   $("body").on("click", ".btn-edit", function () {
     var Id = $(this).attr("data-id");
     var url = "{{ route('petugas.laporan.edit', ':id') }}".replace(':id', Id);

@@ -185,7 +185,7 @@ class AdminDashboardController extends Controller
             MONTH(CONCAT(bulan_tahun, '-01')) as bulan,
             SUM(r_serang + s_serang + b_serang + p_serang) as total_serangan
         ")
-                ->whereRaw("SUBSTRING(bulan_tahun, 1, 4) = ?", [date('Y')]) // Tahun berjalan
+               // ->whereRaw("SUBSTRING(bulan_tahun, 1, 4) = ?", [date('Y')]) // Tahun berjalan
                 ->whereIn('tanaman_id', $tanaman->pluck('id')) // ID tanaman diambil dari hasil query
                 ->groupBy('tanaman_id', 'bulan')
                 ->orderBy('bulan', 'ASC')
