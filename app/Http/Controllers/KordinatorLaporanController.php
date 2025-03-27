@@ -42,6 +42,42 @@ class KordinatorLaporanController extends Controller
         return view('kordinator/laporan/show', $this->data);
     }
 
+    public function filterData(Request $request)
+    {
+        $data = Laporan::with('verifikasi:id,laporan_id,status')
+                ->select('*')
+                ->when($request->petugas_id, fn ($query, $petugas) => $query->where('petugas_id', $petugas))
+                ->when($request->wilayah_kerja_id, fn ($query, $wilayah_kerja) => $query->where('wilayah_kerja_id', $wilayah_kerja))
+                ->when($request->status, function ($query, $status) {
+                    $query->whereHas('verifikasi', fn ($q) => $q->where('status', $status));
+                })
+                ->orderby('bulan_tahun', 'DESC')
+                ->get();
+
+        foreach ($data as $row) {
+            $row->nama_petugas = $row->cariPetugas->cariUser->name;
+            $row->wilayah_kerja = $row->cariWilayahKerja->nama_daerah;
+            $row->jenis_opt = $row->cariOPT->nama_opt;
+            $row->tanaman = $row->cariTanaman->nama_tanaman;
+            $row->periode = Formula::$periode[$row->periode] . ' '.date('F Y', strtotime($row->bulan_tahun));
+            $row->luas_terserang = $row->r_serang + $row->s_serang + $row->b_serang + $row->p_serang;
+            $row->luas_pengendalian = $row->pemusnahan + $row->pestisida + $row->AH + $row->cara_lain;
+            $verif = Verifikasi::where('laporan_id',$row->id)->whereHas('verifikator', function ($query) {
+                $query->where('level', 'Kordinator Kabupaten'); // level Kordinator Kabupaten
+            })->first();
+            if(!empty($verif))
+            {
+                $row->status = ucfirst($verif->status);
+            }else{
+                $row->status = 'Menunggu'; 
+            }
+        }
+
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->make(true);
+    }
+
     public function json()
     {
         $data = Laporan::select('*')

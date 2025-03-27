@@ -9,7 +9,7 @@
                   <div class="card-header">
                     <h3 class="card-title">{{$sub_title}}</h3>
                     <div class="card-options align-items-center">
-                    
+                    <button class="btn btn-success btn-filter mx-2"  data-target="#filterModal" data-toggle="modal"><i class="fa fa-filter"></i> Filter</button>   
                     </div>
                   </div>
                   <div class="card-body " id="card-main">
@@ -45,12 +45,92 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="filterModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header flex-row">
+                <h5 class="modal-title card-body p-0 text-center" id="exampleModalLabel">Cari Data</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    
+                </button>
+            </div>
+            
+            <form action="" method="post" id="filterForm">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">Petugas</label>
+                    <select value="0" class="form-control" name="petugas_id" id="petugas_id">
+                        <option value="0">Semua Petugas</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Wilayah Kerja</label>
+                    <select value="0" class="form-control" name="wilayah_kerja_id" id="wilayah_kerja_id">
+                        <option value="0">Semua Wilayah</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Status</label>
+                    <select class="form-control" name="status" id="status">
+                        <option value="">Semua Status</option>
+                        <option value="menunggu">Menunggu</option>
+                        <option value="diterima">Diterima</option>
+                        <option value="ditolak">Ditolak</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-terapkan btn-primary" data-dismiss="modal">Terapkan</button>
+                <button type="reset" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
 @include('models.verify')
 @endsection
 @section('js')
 <script>
   let icon = 'check';
+  
+  $("body").on("click", ".btn-terapkan", function () {
+    let formData = $("#filterForm").serialize();
+    let url = `{{ Request::url() }}/filter?${formData}`;
+    table.ajax.url(url).load();
+  })
+
   $(function () {
+    //Petugas
+    $.ajax({
+        url: "{{ url('/get/petugas/')}}",
+        type: "GET",
+        cache: false,
+        dataType: 'json',
+        success: function(dataResult) {
+            console.log(dataResult);
+            var resultData = dataResult.data;
+            $.each(resultData, function(index, row) {
+              $('#petugas_id').append('<option value="' + row.id + '">' + row.name + '</option>');
+            })
+        }
+    });
+
+    //Wilayah Kerja
+    $.ajax({
+        url: "{{ url('/get/wilayah/')}}",
+        type: "GET",
+        cache: false,
+        dataType: 'json',
+        success: function(dataResult) {
+            console.log(dataResult);
+            var resultData = dataResult.data;
+            $.each(resultData, function(index, row) {
+              $('#wilayah_kerja_id').append('<option value="' + row.id + '">' + row.nama_daerah + '</option>');
+            })
+        }
+    });
+    
       table = $("#data-width").DataTable({
         searching: true,
         ajax: '{{Request::url() }}/json',

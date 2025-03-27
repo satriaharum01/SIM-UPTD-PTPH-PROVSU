@@ -85,6 +85,31 @@ class HomeController extends Controller
             ->make(true);
     }
 
+    public function getWilayah()
+    {
+        $data = WilayahKerja::select('*')
+                ->get();
+
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->make(true);
+    }
+
+    public function getPetugas()
+    {
+        $data = Petugas::select('*')
+                ->get();
+        
+        foreach($data as $row)
+        {
+            $row->name = $row->cariUser->name;
+        }
+
+        return Datatables::of($data)
+            ->addIndexColumn()
+            ->make(true);
+    }
+
     public function getWilayahKerja($id)
     {
         $kecamatan = Kecamatan::select('id')->where('kabupaten_id',$id)->get()->toArray();

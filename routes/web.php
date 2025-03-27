@@ -18,7 +18,9 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('la
 Route::prefix('get')->name('get.')->group(function () {
     Route::get('/kabupaten', [App\Http\Controllers\HomeController::class, 'getKabupaten']);
     Route::get('/kecamatan', [App\Http\Controllers\HomeController::class, 'getKecamatan']);
+    Route::get('/petugas', [App\Http\Controllers\HomeController::class, 'getPetugas']);
     Route::get('/users/{id}', [App\Http\Controllers\HomeController::class, 'getUsersLevel']);
+    Route::get('/wilayah', [App\Http\Controllers\HomeController::class, 'getWilayah']);
     Route::get('/wilayah_kerja/{id}', [App\Http\Controllers\HomeController::class, 'getWilayahKerja']);
     Route::get('/tanaman', [App\Http\Controllers\HomeController::class, 'getTanaman']);
     Route::get('/opt', [App\Http\Controllers\HomeController::class, 'getOPT']);
@@ -158,6 +160,7 @@ Route::prefix('kordinator')->name('kordinator.')->group(function () {
     });
 
     Route::prefix('laporan')->name('laporan.')->group(function () {
+        Route::GET('/filter', [App\Http\Controllers\KordinatorLaporanController::class, 'filterData']);
         Route::get('/show/{id}', [App\Http\Controllers\KordinatorLaporanController::class, 'show'])->name('show');
         Route::POST('/update/{id}', [App\Http\Controllers\KordinatorLaporanController::class, 'update']);
         Route::GET('/delete/{id}', [App\Http\Controllers\KordinatorLaporanController::class, 'destroy']);

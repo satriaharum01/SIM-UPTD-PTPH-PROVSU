@@ -269,6 +269,7 @@ use App\Http\helpers\Formula;
     let url = `{{ Request::url() }}/filter?${formData}`;
     table.ajax.url(url).load();
   })
+  
   $("body").on("click", ".btn-edit", function () {
     var Id = $(this).attr("data-id");
     var url = "{{ route('petugas.laporan.edit', ':id') }}".replace(':id', Id);
