@@ -104,6 +104,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
     });
 
     Route::prefix('laporan')->name('laporan.')->group(function () {
+        Route::GET('/filter', [App\Http\Controllers\AdminLaporanController::class, 'filterData']);
         Route::POST('/update/{id}', [App\Http\Controllers\AdminLaporanController::class, 'update']);
         Route::GET('/delete/{id}', [App\Http\Controllers\AdminLaporanController::class, 'destroy']);
         Route::get('/json', [App\Http\Controllers\AdminLaporanController::class, 'json']);
